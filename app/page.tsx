@@ -702,17 +702,17 @@ function ObjectionRemovalSection() {
     {
       question: "Will solar installation damage my roof structure?",
       answer:
-        "This is the most common concern I hear—and it&apos;s valid. The data is clear: properly engineered installations with flashed penetrations and correct torque specifications maintain roof integrity for 25+ years. Our audit includes load calculations per ASCE 7 standards and a detailed roof condition assessment. We evaluate decking integrity, rafter spacing, and remaining roof life. If your roof has less than 10 years remaining, I&apos;ll tell you directly—we reroof first or we don&apos;t install. Every mounting point is sealed with industry-standard flashing that actually improves weather resistance at those locations.",
+        "This is the most common concern I hear—and it's valid. The data is clear: properly engineered installations with flashed penetrations and correct torque specifications maintain roof integrity for 25+ years. Our audit includes load calculations per ASCE 7 standards and a detailed roof condition assessment. We evaluate decking integrity, rafter spacing, and remaining roof life. If your roof has less than 10 years remaining, I'll tell you directly—we reroof first or we don't install. Every mounting point is sealed with industry-standard flashing that actually improves weather resistance at those locations.",
     },
     {
       question: "What happens to production on cloudy days?",
       answer:
-        "Solar panels don&apos;t require direct sunlight—they respond to photons, which penetrate cloud cover. On overcast days, expect 10-25% of peak output depending on cloud density. The engineering math accounts for this: our irradiance models use TMY3 data (Typical Meteorological Year) incorporating 30 years of local weather patterns. Your annual production estimate already factors in average cloudy days for your location. Germany, with weather comparable to Seattle, is the fourth-largest solar market globally. The technology works. The question is whether the economics work for your specific situation—that&apos;s what the engineering audit determines.",
+        "Solar panels don't require direct sunlight—they respond to photons, which penetrate cloud cover. On overcast days, expect 10-25% of peak output depending on cloud density. The engineering math accounts for this: our irradiance models use TMY3 data (Typical Meteorological Year) incorporating 30 years of local weather patterns. Your annual production estimate already factors in average cloudy days for your location. Germany, with weather comparable to Seattle, is the fourth-largest solar market globally. The technology works. The question is whether the economics work for your specific situation—that's what the engineering audit determines.",
     },
     {
-      question: "What&apos;s the realistic ROI timeline?",
+      question: "What's the realistic ROI timeline?",
       answer:
-        "I won&apos;t give you a generic answer because ROI varies significantly by location, utility rates, and financing choice. Here&apos;s the framework: For cash purchases in regions with $0.14+/kWh rates and good sun exposure, expect 5-7 year payback with 15-20% annual returns thereafter. Loan financing extends payback to 8-12 years but provides immediate positive cash flow. PPA delivers day-one savings with no ownership benefits. Our engineering audit provides a detailed 25-year cash flow projection using your actual utility data, local incentives, and equipment degradation curves. No assumptions—just math.",
+        "I won't give you a generic answer because ROI varies significantly by location, utility rates, and financing choice. Here's the framework: For cash purchases in regions with $0.14+/kWh rates and good sun exposure, expect 5-7 year payback with 15-20% annual returns thereafter. Loan financing extends payback to 8-12 years but provides immediate positive cash flow. PPA delivers day-one savings with no ownership benefits. Our engineering audit provides a detailed 25-year cash flow projection using your actual utility data, local incentives, and equipment degradation curves. No assumptions—just math.",
     },
   ]
 
@@ -722,7 +722,7 @@ function ObjectionRemovalSection() {
         <div className="text-center mb-16">
           <p className="text-orange-500 font-medium mb-3">OBJECTION REMOVAL</p>
           <h2 className="text-3xl md:text-4xl font-bold text-white text-balance">
-            Let&apos;s Address Your Concerns Directly
+            {"Let's Address Your Concerns Directly"}
           </h2>
           <p className="mt-4 text-slate-400">
             Engineering answers backed by data, not sales pitches.
