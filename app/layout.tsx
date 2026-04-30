@@ -7,8 +7,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'Zenith Solar | Engineering-First Solar Solutions',
+  description: 'Stop renting your power. Own your energy with precision-engineered solar systems designed by certified engineers.',
   generator: 'v0.app',
   icons: {
     icon: [
