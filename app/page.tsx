@@ -614,43 +614,50 @@ function PricingSection({ onOpenModal }: { onOpenModal: () => void }) {
   )
 }
 
-// Social Proof Section
-function SocialProofSection() {
+// Proven Results Section
+function ProvenResultsSection() {
   const stats = [
-    { value: "$4.2M", label: "Customer Savings This Year" },
-    { value: "47 GWh", label: "Clean Energy Generated" },
-    { value: "4.9/5", label: "Average Customer Rating" },
+    { value: "4.2 GWh", label: "Clean Energy Produced" },
+    { value: "12,000", label: "Trees Planted Equivalent" },
+    { value: "$2,850", label: "Avg. Annual Savings" },
   ]
 
   const testimonials = [
     {
       quote:
-        "The engineering audit revealed issues with my previous quotes that would have cost me thousands in suboptimal placement. Zenith&apos;s attention to detail is unmatched.",
+        "The engineering audit caught a structural issue my previous installer missed entirely. Zenith&apos;s methodical approach gave me confidence in every recommendation.",
       author: "Dr. Sarah Chen",
-      role: "Homeowner, Austin TX",
+      location: "Austin, TX",
       rating: 5,
     },
     {
       quote:
-        "As a structural engineer myself, I was impressed by their load calculations and mounting specifications. They speak our language.",
+        "As a structural engineer myself, I scrutinize everything. Their load calculations and mounting specifications met standards I rarely see in residential solar.",
       author: "Michael Torres, P.E.",
-      role: "Homeowner, Denver CO",
+      location: "Denver, CO",
       rating: 5,
     },
     {
       quote:
-        "Three years in, my system is producing 4% above projections. The monitoring dashboard keeps me informed without being overwhelming.",
+        "Three years in and my system is producing 4% above projections. The monitoring dashboard keeps me informed without being overwhelming.",
       author: "Jennifer Walsh",
-      role: "Homeowner, Phoenix AZ",
+      location: "Phoenix, AZ",
       rating: 5,
     },
   ]
 
   return (
-    <section className="py-24 bg-slate-800">
+    <section id="results" className="py-24 bg-slate-800">
       <div className="container mx-auto px-4">
-        {/* Stats */}
-        <div className="grid md:grid-cols-3 gap-8 mb-20">
+        <div className="text-center mb-16">
+          <p className="text-orange-500 font-medium mb-3">PROVEN RESULTS</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-balance">
+            Engineered Performance, Measured Impact
+          </h2>
+        </div>
+
+        {/* Stats Bar */}
+        <div className="grid md:grid-cols-3 gap-8 mb-20 p-8 rounded-2xl bg-slate-900/50 border border-slate-700">
           {stats.map((stat) => (
             <div key={stat.label} className="text-center">
               <p className="text-4xl md:text-5xl font-bold text-orange-500">{stat.value}</p>
@@ -664,15 +671,21 @@ function SocialProofSection() {
           {testimonials.map((testimonial) => (
             <Card key={testimonial.author} className="bg-slate-900 border-slate-700">
               <CardContent className="pt-6">
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: testimonial.rating }).map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-orange-500 text-orange-500" />
-                  ))}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex gap-1">
+                    {Array.from({ length: testimonial.rating }).map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-orange-500 text-orange-500" />
+                    ))}
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full">
+                    <Check className="h-3 w-3" />
+                    Verified Homeowner
+                  </span>
                 </div>
                 <p className="text-slate-300 leading-relaxed">&ldquo;{testimonial.quote}&rdquo;</p>
                 <div className="mt-6 pt-4 border-t border-slate-800">
                   <p className="font-medium text-white">{testimonial.author}</p>
-                  <p className="text-sm text-slate-500">{testimonial.role}</p>
+                  <p className="text-sm text-slate-500">{testimonial.location}</p>
                 </div>
               </CardContent>
             </Card>
@@ -683,44 +696,37 @@ function SocialProofSection() {
   )
 }
 
-// FAQ Section
-function FAQSection() {
+// Objection Removal FAQ Section
+function ObjectionRemovalSection() {
   const faqs = [
     {
-      question: "Will solar panels damage my roof?",
+      question: "Will solar installation damage my roof structure?",
       answer:
-        "When installed correctly, solar panels actually protect your roof from weathering. Our engineering audit includes a comprehensive roof assessment. We use industry-leading mounting systems with flashed attachments that maintain roof integrity. If your roof needs replacement within the next 5-7 years, we&apos;ll recommend addressing that first to avoid reinstallation costs.",
+        "This is the most common concern I hear—and it&apos;s valid. The data is clear: properly engineered installations with flashed penetrations and correct torque specifications maintain roof integrity for 25+ years. Our audit includes load calculations per ASCE 7 standards and a detailed roof condition assessment. We evaluate decking integrity, rafter spacing, and remaining roof life. If your roof has less than 10 years remaining, I&apos;ll tell you directly—we reroof first or we don&apos;t install. Every mounting point is sealed with industry-standard flashing that actually improves weather resistance at those locations.",
     },
     {
-      question: "What&apos;s the realistic ROI on a solar system?",
+      question: "What happens to production on cloudy days?",
       answer:
-        "ROI depends on your local utility rates, sun exposure, and financing choice. For a typical cash purchase in a sunny region with $0.15/kWh rates, expect payback in 6-8 years with 15-17% annual ROI thereafter. Loan and PPA options provide immediate monthly savings but extend the break-even timeline. We provide detailed 25-year financial projections in your engineering audit.",
+        "Solar panels don&apos;t require direct sunlight—they respond to photons, which penetrate cloud cover. On overcast days, expect 10-25% of peak output depending on cloud density. The engineering math accounts for this: our irradiance models use TMY3 data (Typical Meteorological Year) incorporating 30 years of local weather patterns. Your annual production estimate already factors in average cloudy days for your location. Germany, with weather comparable to Seattle, is the fourth-largest solar market globally. The technology works. The question is whether the economics work for your specific situation—that&apos;s what the engineering audit determines.",
     },
     {
-      question: "How do you calculate system size?",
+      question: "What&apos;s the realistic ROI timeline?",
       answer:
-        "We analyze 12 months of utility data, conduct satellite-based shading analysis, and apply location-specific irradiance data. We size for 100-110% offset to account for degradation and usage growth. Oversizing wastes money; undersizing leaves savings on the table. Our engineering approach finds the optimal balance.",
-    },
-    {
-      question: "What happens during a power outage?",
-      answer:
-        "Standard grid-tied systems shut down during outages for utility worker safety. With our battery backup option, critical loads remain powered. We design backup systems based on your priority circuits—typically refrigeration, medical equipment, home office, and minimal HVAC. Full home backup is possible but rarely cost-effective.",
-    },
-    {
-      question: "Are the federal tax credits really going away?",
-      answer:
-        "The 30% Investment Tax Credit (ITC) is locked in through 2032, then steps down to 26% in 2033 and 22% in 2034. Systems must be operational by December 31 of the tax year to qualify. We handle timeline management to ensure you capture the full credit.",
+        "I won&apos;t give you a generic answer because ROI varies significantly by location, utility rates, and financing choice. Here&apos;s the framework: For cash purchases in regions with $0.14+/kWh rates and good sun exposure, expect 5-7 year payback with 15-20% annual returns thereafter. Loan financing extends payback to 8-12 years but provides immediate positive cash flow. PPA delivers day-one savings with no ownership benefits. Our engineering audit provides a detailed 25-year cash flow projection using your actual utility data, local incentives, and equipment degradation curves. No assumptions—just math.",
     },
   ]
 
   return (
-    <section className="py-24 bg-slate-900">
+    <section id="faq" className="py-24 bg-slate-900">
       <div className="container mx-auto px-4 max-w-3xl">
         <div className="text-center mb-16">
-          <p className="text-orange-500 font-medium mb-3">FAQ</p>
+          <p className="text-orange-500 font-medium mb-3">OBJECTION REMOVAL</p>
           <h2 className="text-3xl md:text-4xl font-bold text-white text-balance">
-            Common Questions
+            Let&apos;s Address Your Concerns Directly
           </h2>
+          <p className="mt-4 text-slate-400">
+            Engineering answers backed by data, not sales pitches.
+          </p>
         </div>
 
         <Accordion type="single" collapsible className="space-y-4">
@@ -730,7 +736,7 @@ function FAQSection() {
               value={`item-${index}`}
               className="bg-slate-800/50 border border-slate-700 rounded-lg px-6"
             >
-              <AccordionTrigger className="text-white hover:text-orange-500 text-left">
+              <AccordionTrigger className="text-white hover:text-orange-500 text-left font-medium">
                 {faq.question}
               </AccordionTrigger>
               <AccordionContent className="text-slate-400 leading-relaxed">
@@ -820,8 +826,8 @@ export default function LandingPage() {
       <MethodSection />
       <FeaturesSection />
       <PricingSection onOpenModal={() => setModalOpen(true)} />
-      <SocialProofSection />
-      <FAQSection />
+      <ProvenResultsSection />
+      <ObjectionRemovalSection />
       <FooterSection />
     </main>
   )
