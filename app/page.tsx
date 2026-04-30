@@ -222,6 +222,60 @@ function LeadCaptureModal({
   )
 }
 
+// Learn More Modal
+function LearnMoreModal({
+  open,
+  onOpenChange,
+}: {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}) {
+  const reasons = [
+    {
+      title: "Engineering-First Approach",
+      description: "Unlike typical solar companies, we're led by certified engineers who analyze 47 data points before recommending a system.",
+    },
+    {
+      title: "No Salespeople, No Pressure",
+      description: "Our consultations focus on data and your specific needs—not aggressive sales tactics or inflated promises.",
+    },
+    {
+      title: "25-Year Performance Guarantee",
+      description: "We stand behind our systems with comprehensive warranties and ongoing monitoring support.",
+    },
+    {
+      title: "Transparent Pricing",
+      description: "No hidden fees or surprise costs. You see the full breakdown before signing anything.",
+    },
+  ]
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="text-xl">Why Choose Zenith Solar?</DialogTitle>
+          <DialogDescription>
+            Here's what sets us apart from the competition.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          {reasons.map((reason, index) => (
+            <div key={index} className="flex gap-4">
+              <div className="flex-shrink-0 h-8 w-8 rounded-full bg-orange-500/10 flex items-center justify-center">
+                <Check className="h-4 w-4 text-orange-500" />
+              </div>
+              <div>
+                <h4 className="font-medium text-foreground">{reason.title}</h4>
+                <p className="text-sm text-muted-foreground mt-1">{reason.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 // Navigation Component
 function Navigation({ onOpenModal }: { onOpenModal: () => void }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -291,7 +345,7 @@ function Navigation({ onOpenModal }: { onOpenModal: () => void }) {
 }
 
 // Hero Section
-function HeroSection({ onOpenModal }: { onOpenModal: () => void }) {
+function HeroSection({ onOpenModal, onLearnMore }: { onOpenModal: () => void; onLearnMore: () => void }) {
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
       {/* Background gradient */}
@@ -322,6 +376,14 @@ function HeroSection({ onOpenModal }: { onOpenModal: () => void }) {
           >
             Start Your Engineering Audit
             <ArrowRight className="ml-2 h-5 w-5" />
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            onClick={onLearnMore}
+            className="border-slate-600 text-white hover:bg-slate-800 text-lg px-8 py-6"
+          >
+            Learn More
           </Button>
         </div>
 
@@ -825,12 +887,14 @@ function FooterSection({ onOpenModal }: { onOpenModal: () => void }) {
 // Main Landing Page
 export default function LandingPage() {
   const [modalOpen, setModalOpen] = useState(false)
+  const [learnMoreOpen, setLearnMoreOpen] = useState(false)
 
   return (
     <main className="min-h-screen bg-slate-900 text-foreground">
       <Navigation onOpenModal={() => setModalOpen(true)} />
       <LeadCaptureModal open={modalOpen} onOpenChange={setModalOpen} />
-      <HeroSection onOpenModal={() => setModalOpen(true)} />
+      <LearnMoreModal open={learnMoreOpen} onOpenChange={setLearnMoreOpen} />
+      <HeroSection onOpenModal={() => setModalOpen(true)} onLearnMore={() => setLearnMoreOpen(true)} />
       <MethodSection />
       <FeaturesSection />
       <PricingSection onOpenModal={() => setModalOpen(true)} />
