@@ -751,58 +751,66 @@ function ObjectionRemovalSection() {
 }
 
 // Footer Section
-function FooterSection() {
+function FooterSection({ onOpenModal }: { onOpenModal: () => void }) {
   const [email, setEmail] = useState("")
-  const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleQuickAudit = (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
-    setEmail("")
+    if (email) {
+      onOpenModal()
+      setEmail("")
+    }
   }
 
   return (
     <footer className="py-16 bg-slate-950 border-t border-slate-800">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-12 items-center max-w-4xl mx-auto">
-          {/* Mission */}
+        <div className="grid md:grid-cols-3 gap-12 items-start">
+          {/* Left: Logo + Tagline */}
           <div>
-            <h3 className="text-xl font-semibold text-white mb-4">
+            <h3 className="text-xl font-semibold text-white mb-3">
               Zenith<span className="text-orange-500">Solar</span>
             </h3>
             <p className="text-slate-400 leading-relaxed">
-              We believe energy independence shouldn&apos;t require a leap of faith. 
-              Our engineering-first approach replaces sales pressure with data-driven 
-              recommendations. Every system we design is built to perform for decades.
+              Engineering a brighter, independent grid.
             </p>
           </div>
 
-          {/* Email Capture */}
-          <div>
-            <p className="text-white font-medium mb-3">Get solar insights delivered</p>
-            <p className="text-sm text-slate-500 mb-4">
-              Monthly engineering tips and industry updates. No spam.
-            </p>
-            {submitted ? (
-              <p className="text-orange-500 font-medium">Thanks! Check your inbox.</p>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex gap-3">
-                <Input
-                  type="email"
-                  placeholder="your@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-500"
-                />
-                <Button
-                  type="submit"
-                  className="bg-orange-500 hover:bg-orange-600 text-white flex-shrink-0"
-                >
-                  Subscribe
-                </Button>
-              </form>
-            )}
+          {/* Center: Links */}
+          <div className="flex flex-col items-start md:items-center gap-3">
+            <a
+              href="#"
+              className="text-slate-400 hover:text-orange-500 transition-colors"
+            >
+              Tax Credit Guide 2026
+            </a>
+            <a
+              href="#method"
+              className="text-slate-400 hover:text-orange-500 transition-colors"
+            >
+              How it Works
+            </a>
+          </div>
+
+          {/* Right: Quick Audit Form */}
+          <div className="flex flex-col items-start md:items-end">
+            <p className="text-white font-medium mb-3">Quick Audit</p>
+            <form onSubmit={handleQuickAudit} className="flex gap-3 w-full md:w-auto">
+              <Input
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-500 md:w-48"
+              />
+              <Button
+                type="submit"
+                className="bg-orange-500 hover:bg-orange-600 text-white flex-shrink-0 hover:shadow-[0_0_20px_rgba(249,115,22,0.3)] transition-shadow"
+              >
+                Start
+              </Button>
+            </form>
           </div>
         </div>
 
@@ -828,7 +836,7 @@ export default function LandingPage() {
       <PricingSection onOpenModal={() => setModalOpen(true)} />
       <ProvenResultsSection />
       <ObjectionRemovalSection />
-      <FooterSection />
+      <FooterSection onOpenModal={() => setModalOpen(true)} />
     </main>
   )
 }
