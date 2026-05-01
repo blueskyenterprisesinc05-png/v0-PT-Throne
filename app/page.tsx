@@ -395,7 +395,7 @@ function HeroSection({ onOpenModal, onLearnMore }: { onOpenModal: () => void; on
           </Button>
           <Button
             size="lg"
-            variant="outline"
+            variant="default"
             onClick={onLearnMore}
             className="border-slate-600 text-white hover:bg-slate-800 text-lg px-8 py-6"
           >
