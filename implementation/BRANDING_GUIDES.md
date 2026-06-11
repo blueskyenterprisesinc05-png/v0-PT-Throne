@@ -221,6 +221,78 @@ Site uses: orange fill, white text, generous padding. Optional shadow: `box-shad
     </td>
   </tr>
 </table>
+---
+
+## Full Email Template
+
+Below is the complete HTML template used in n8n for the audit roadmap email, featuring the dynamic unsubscribe link:
+
+```html
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0F172A; width:100%; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <tr>
+    <td align="center" style="padding:32px 24px;">
+      <table width="600" cellpadding="0" cellspacing="0" style="width:100%; max-width:600px;">
+        <!-- Header -->
+        <tr>
+          <td style="font-size:20px; font-weight:600; color:#FFFFFF; padding-bottom:32px;">
+            Zenith<span style="color:#F97316;">Solar</span>
+          </td>
+        </tr>
+        <!-- Hero Section -->
+        <tr>
+          <td style="font-size:13px; font-weight:500; color:#F97316; text-transform:uppercase; letter-spacing:0.05em; padding-bottom:8px;">
+            ENGINEERING-FIRST SOLAR SOLUTIONS
+          </td>
+        </tr>
+        <tr>
+          <td style="font-size:28px; font-weight:700; color:#FFFFFF; line-height:1.2; padding-bottom:16px;">
+            Hi {{ $json.body.firstName }}, your engineering audit is ready.
+          </td>
+        </tr>
+        <tr>
+          <td style="font-size:16px; color:#94A3B8; line-height:1.7; padding-bottom:32px;">
+            Based on your property at <strong>{{ $json.body.address }}</strong>, our engineering team has begun reviewing your data. We focus on performance and data-driven reliability over standard sales pitches.<br><br>
+            <span style="font-size: 12px; color: #64748B;">You received this because you requested an audit via our website.</span>
+          </td>
+        </tr>
+        <!-- Summary Card -->
+        <tr>
+          <td style="background-color:#1E293B; border:1px solid #334155; border-radius:10px; padding:24px;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="font-size:14px; color:#64748B; padding-bottom:16px; border-bottom:1px solid #334155;">ROADMAP SUMMARY</td>
+              </tr>
+              <tr>
+                <td style="padding-top:16px;">
+                  <div style="font-size:14px; color:#CBD5E1; margin-bottom:8px;">Address: <strong>{{ $json.body.address }}</strong></div>
+                  <div style="font-size:14px; color:#CBD5E1; margin-bottom:8px;">Monthly Bill: <strong>${{ $json.body.monthlyBill }}</strong></div>
+                  <div style="font-size:14px; color:#CBD5E1;">Roof Age: <strong>{{ $json.body.roofAge }} Years</strong></div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <!-- Call to Action -->
+        <tr>
+          <td style="padding:40px 0 32px 0; text-align:center;">
+            <a href="https://calendly.com/blueskyenterprisesinc05/new-meeting" style="display:inline-block; background-color:#F97316; color:#FFFFFF; font-size:16px; font-weight:600; text-decoration:none; padding:14px 32px; border-radius:6px;">
+              Schedule Your Consultation
+            </a>
+          </td>
+        </tr>
+        <!-- Footer -->
+        <tr>
+          <td style="border-top:1px solid #334155; padding-top:24px; text-align:center;">
+            <p style="font-size:14px; color:#64748B; margin:0; padding-bottom: 8px;">Engineering a brighter, independent grid.</p>
+            <p style="font-size:12px; color:#64748B; margin:0;">
+              <a href="http://n8n-p8ak1rbqv5qo1quovmnzhztu.34.27.218.5.sslip.io/webhook/6746b665-88fd-4209-8e16-5f9f8fc8b8c2?email={{ $json.body.email }}" style="color:#64748B; text-decoration:underline;">Unsubscribe</a>
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
 ```
 
 ---
