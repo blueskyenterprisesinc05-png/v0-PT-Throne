@@ -3,8 +3,6 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Slider } from "@/components/ui/slider"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Dialog,
@@ -34,193 +32,10 @@ import {
   Sun,
   Check,
   Star,
-  Loader2,
   Zap,
   ArrowRight,
 } from "lucide-react"
-
-// Multi-Step Lead Capture Modal
-function LeadCaptureModal({
-  open,
-  onOpenChange,
-}: {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-}) {
-  const [step, setStep] = useState(1)
-  const [isLoading, setIsLoading] = useState(false)
-  const [formData, setFormData] = useState({
-    address: "",
-    monthlyBill: [150],
-    roofAge: "",
-    name: "",
-    email: "",
-    phone: "",
-  })
-
-  const handleSubmit = () => {
-    setIsLoading(true)
-    setTimeout(() => {
-      setIsLoading(false)
-      onOpenChange(false)
-      setStep(1)
-    }, 3000)
-  }
-
-  const resetAndClose = (isOpen: boolean) => {
-    if (!isOpen) {
-      setStep(1)
-      setIsLoading(false)
-    }
-    onOpenChange(isOpen)
-  }
-
-  return (
-    <Dialog open={open} onOpenChange={resetAndClose}>
-      <DialogContent className="sm:max-w-md">
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-12">
-            <Loader2 className="h-12 w-12 animate-spin text-orange-500" />
-            <p className="mt-4 text-lg font-medium">Running Engineering Audit...</p>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Analyzing your property specifications
-            </p>
-          </div>
-        ) : (
-          <>
-            <DialogHeader>
-              <DialogTitle>
-                {step === 1 && "Where is the property?"}
-                {step === 2 && "Energy Profile"}
-                {step === 3 && "Contact Details"}
-              </DialogTitle>
-              <DialogDescription>
-                Step {step} of 3
-              </DialogDescription>
-            </DialogHeader>
-
-            {step === 1 && (
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label htmlFor="address">Property Address</Label>
-                  <Input
-                    id="address"
-                    placeholder="123 Main St, City, State ZIP"
-                    value={formData.address}
-                    onChange={(e) =>
-                      setFormData({ ...formData, address: e.target.value })
-                    }
-                  />
-                </div>
-                <Button
-                  className="w-full bg-orange-500 hover:bg-orange-600 text-white"
-                  onClick={() => setStep(2)}
-                  disabled={!formData.address}
-                >
-                  Continue
-                </Button>
-              </div>
-            )}
-
-            {step === 2 && (
-              <div className="space-y-6 py-4">
-                <div className="space-y-4">
-                  <Label>Average Monthly Electric Bill: ${formData.monthlyBill[0]}</Label>
-                  <Slider
-                    value={formData.monthlyBill}
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, monthlyBill: value })
-                    }
-                    min={50}
-                    max={500}
-                    step={10}
-                    className="py-4"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="roofAge">Roof Age (years)</Label>
-                  <Input
-                    id="roofAge"
-                    type="number"
-                    placeholder="e.g., 5"
-                    value={formData.roofAge}
-                    onChange={(e) =>
-                      setFormData({ ...formData, roofAge: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="flex gap-3">
-                  <Button variant="outline" onClick={() => setStep(1)} className="flex-1">
-                    Back
-                  </Button>
-                  <Button
-                    className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
-                    onClick={() => setStep(3)}
-                    disabled={!formData.roofAge}
-                  >
-                    Continue
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {step === 3 && (
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
-                  <Input
-                    id="name"
-                    placeholder="Marcus Thorne"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="marcus@example.com"
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="(555) 123-4567"
-                    value={formData.phone}
-                    onChange={(e) =>
-                      setFormData({ ...formData, phone: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="flex gap-3">
-                  <Button variant="outline" onClick={() => setStep(2)} className="flex-1">
-                    Back
-                  </Button>
-                  <Button
-                    className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
-                    onClick={handleSubmit}
-                    disabled={!formData.name || !formData.email || !formData.phone}
-                  >
-                    Get My Audit
-                  </Button>
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </DialogContent>
-    </Dialog>
-  )
-}
+import { LeadCaptureModal } from "@/components/lead-capture-modal"
 
 // Learn More Modal
 function LearnMoreModal({
@@ -397,7 +212,7 @@ function HeroSection({ onOpenModal, onLearnMore }: { onOpenModal: () => void; on
             size="lg"
             variant="outline"
             onClick={onLearnMore}
-            className="border-slate-600 text-white hover:bg-slate-800 text-lg px-8 py-6"
+            className="border-slate-500 bg-transparent text-white hover:bg-slate-800/80 hover:text-white text-lg px-8 py-6 shadow-none"
           >
             Learn More
           </Button>
