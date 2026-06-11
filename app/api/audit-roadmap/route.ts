@@ -71,7 +71,10 @@ export async function POST(req: NextRequest) {
     { ...data, source: payload.source },
     referer,
   )
-  if (!supabaseResult.ok && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+  const hasRealServiceRoleKey = serviceRoleKey && !serviceRoleKey.startsWith("your-")
+
+  if (!supabaseResult.ok && hasRealServiceRoleKey) {
     return NextResponse.json({ error: "Failed to save submission" }, { status: 500 })
   }
 
