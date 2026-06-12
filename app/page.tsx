@@ -809,7 +809,7 @@ export default function LandingPage() {
   const [modalOpen, setModalOpen] = useState(false)
   const [learnMoreOpen, setLearnMoreOpen] = useState(false)
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zenithsolar.com"
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.woflbillion.com.ng"
 
   const jsonLd = {
     "@context": "https://schema.org",
