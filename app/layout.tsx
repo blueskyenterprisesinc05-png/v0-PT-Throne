@@ -8,10 +8,37 @@ import './globals.css'
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://zenithsolar.com'
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: 'Zenith Solar | Engineering-First Solar Solutions',
   description: 'Stop renting your power. Own your energy with precision-engineered solar systems designed by certified engineers.',
-  generator: 'v0.app',
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Zenith Solar | Engineering-First Solar Solutions',
+    description: 'Stop renting your power. Own your energy with precision-engineered solar systems designed by certified engineers.',
+    url: '/',
+    siteName: 'Zenith Solar',
+    images: [
+      {
+        url: '/placeholder.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Zenith Solar | Engineering-First Solar Solutions',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Zenith Solar | Engineering-First Solar Solutions',
+    description: 'Stop renting your power. Own your energy with precision-engineered solar systems designed by certified engineers.',
+    images: ['/placeholder.jpg'],
+  },
   icons: {
     icon: [
       {

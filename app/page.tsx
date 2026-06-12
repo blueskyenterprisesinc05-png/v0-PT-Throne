@@ -34,6 +34,7 @@ import {
   Star,
   Zap,
   ArrowRight,
+  ChevronDown,
 } from "lucide-react"
 import { LeadCaptureModal } from "@/components/lead-capture-modal"
 
@@ -589,23 +590,111 @@ function ProvenResultsSection() {
   )
 }
 
+// Sub-component for individual guides to isolate state
+function TechnicalGuideCard({ guide }: { guide: { title: string; subtitle: string; excerpt: string; content: string } }) {
+  const [expanded, setExpanded] = useState(false)
+
+  return (
+    <Card className="bg-slate-900 border-slate-700 hover:border-orange-500/50 transition-colors flex flex-col justify-between">
+      <CardHeader>
+        <span className="text-xs font-mono text-orange-500 uppercase tracking-wider">{guide.subtitle}</span>
+        <CardTitle className="text-white mt-2 text-xl">{guide.title}</CardTitle>
+        <CardDescription className="text-slate-400 mt-4 leading-relaxed">
+          {guide.excerpt}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="pt-0">
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="text-sm font-medium text-orange-500 hover:text-orange-400 flex items-center gap-2 py-2 cursor-pointer text-left outline-none"
+        >
+          {expanded ? "Hide Article" : "Read Full Article"}
+          <ChevronDown className={`h-4 w-4 transition-transform duration-200 shrink-0 ${expanded ? "rotate-180" : ""}`} />
+        </button>
+        
+        <div className={`grid transition-all duration-300 ease-in-out ${expanded ? "grid-rows-[1fr] opacity-100 mt-4" : "grid-rows-[0fr] opacity-0"}`}>
+          <div className="overflow-hidden">
+            <div className="text-slate-300 text-sm leading-relaxed pt-4 border-t border-slate-800">
+              {guide.content}
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+// Technical Guides & Resources Section for SEO/GEO
+function TechnicalGuidesSection() {
+  const guides = [
+    {
+      title: "2026 Solar Tax Credits & Incentives Guide",
+      subtitle: "Federal & State Incentives",
+      excerpt: "The Residential Clean Energy Credit allows you to deduct 30% of your solar installation costs from your federal taxes. Learn about battery storage eligibility, rollover rules, and state-specific rebates.",
+      content: "Under Section 25D of the Internal Revenue Code, homeowners can claim a 30% tax credit for solar PV systems, battery storage (with a capacity of 3 kWh or greater), and associated wiring/racking. This credit has been extended at 30% through 2032. If your tax liability is lower than the credit amount, the remaining credit rolls over to the next tax year. In states like Texas, Colorado, and Arizona, local utilities offer additional performance-based incentives and net-metering credits that stack with the federal credit."
+    },
+    {
+      title: "TOPCon vs. PERC Solar Technology Comparison",
+      subtitle: "N-Type vs. P-Type Performance",
+      excerpt: "TOPCon (Tunnel Oxide Passivated Contact) is the new standard in solar efficiency. Discover why N-type cells outperform traditional P-type PERC panels in efficiency, temperature coefficient, and degradation.",
+      content: "TOPCon technology represents a major architectural leap over legacy PERC (Passivated Emitter and Rear Cell) panels. By placing an ultra-thin silicon oxide tunnel layer and heavily doped polycrystalline silicon on the rear side of the cell, TOPCon minimizes electron recombination losses. This results in panel efficiencies exceeding 22.5% compared to PERC's 20-21% limit. Furthermore, TOPCon panels have a temperature coefficient of -0.29%/°C (retaining more power in high heat) and show near-zero Light Induced Degradation (LID)."
+    }
+  ]
+
+  return (
+    <section id="resources" className="py-24 bg-slate-800">
+      <div className="container mx-auto px-4 max-w-4xl">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-sm font-medium mb-4">
+            <ClipboardCheck className="h-4 w-4" />
+            Engineering Data Verified: June 2026
+          </div>
+          <p className="text-orange-500 font-medium mb-3">TECHNICAL RESOURCES</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-balance">
+            In-Depth Engineering Guides
+          </h2>
+          <p className="mt-4 text-slate-400">
+            Learn the science and financial modeling behind modern solar infrastructure.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8 items-start">
+          {guides.map((guide) => (
+            <TechnicalGuideCard key={guide.title} guide={guide} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 // Objection Removal FAQ Section
 function ObjectionRemovalSection() {
   const faqs = [
     {
-      question: "Will solar installation damage my roof structure?",
+      question: "Do solar panels damage your roof structure during installation?",
       answer:
-        "This is the most common concern I hear—and it's valid. The data is clear: properly engineered installations with flashed penetrations and correct torque specifications maintain roof integrity for 25+ years. Our audit includes load calculations per ASCE 7 standards and a detailed roof condition assessment. We evaluate decking integrity, rafter spacing, and remaining roof life. If your roof has less than 10 years remaining, I'll tell you directly—we reroof first or we don't install. Every mounting point is sealed with industry-standard flashing that actually improves weather resistance at those locations.",
+        "No. When designed by certified structural engineers to ASCE 7 load calculations with proper torque limits and flashed penetrations, solar mounting systems do not compromise roof integrity. Our audit evaluates decking integrity, rafter spacing, and remaining roof life. If your roof has less than 10 years remaining, we reroof first or we don't install. Every mounting point is sealed with industry-standard flashing that actually improves weather resistance at those locations.",
     },
     {
-      question: "What happens to production on cloudy days?",
+      question: "How much solar electricity do panels produce on cloudy days?",
       answer:
-        "Solar panels don't require direct sunlight—they respond to photons, which penetrate cloud cover. On overcast days, expect 10-25% of peak output depending on cloud density. The engineering math accounts for this: our irradiance models use TMY3 data (Typical Meteorological Year) incorporating 30 years of local weather patterns. Your annual production estimate already factors in average cloudy days for your location. Germany, with weather comparable to Seattle, is the fourth-largest solar market globally. The technology works. The question is whether the economics work for your specific situation—that's what the engineering audit determines.",
+        "Between 10% and 25% of peak capacity. Modern N-Type TOPCon panels capture solar photons through dense cloud cover, and our design yields are modeled using 30-year local TMY3 weather profiles (Typical Meteorological Year). Your annual production estimate already factors in average cloudy days for your location. The technology is highly viable—Germany, with weather comparable to Seattle, is the fourth-largest solar market globally.",
     },
     {
-      question: "What's the realistic ROI timeline?",
+      question: "What is the typical return on investment (ROI) payback period for solar?",
       answer:
-        "I won't give you a generic answer because ROI varies significantly by location, utility rates, and financing choice. Here's the framework: For cash purchases in regions with $0.14+/kWh rates and good sun exposure, expect 5-7 year payback with 15-20% annual returns thereafter. Loan financing extends payback to 8-12 years but provides immediate positive cash flow. PPA delivers day-one savings with no ownership benefits. Our engineering audit provides a detailed 25-year cash flow projection using your actual utility data, local incentives, and equipment degradation curves. No assumptions—just math.",
+        "Between 5 and 7 years for cash purchases, and immediate cash-flow positive for solar loans. The exact payback depends on local utility rates and sun exposure. For cash purchases in regions with $0.14+/kWh rates and good sun exposure, expect 15-20% annual returns thereafter. Our engineering audit provides a detailed 25-year cash flow projection using your actual utility data, local incentives, and equipment degradation curves. No assumptions—just math.",
+    },
+    {
+      question: "What is the degradation rate of TOPCon solar panels?",
+      answer:
+        "Less than 0.4% annually over a 30-year performance warranty. N-Type TOPCon cells resist Light Induced Degradation (LID) and Light and elevated Temperature Induced Degradation (LeTID) far better than legacy P-type PERC cells. This ensures your system maintains over 87% of its initial nameplate output even after three decades of operation.",
+    },
+    {
+      question: "How does time-of-use (TOU) optimization work with battery backup?",
+      answer:
+        "By storing solar energy during off-peak hours and discharging it during high-tariff periods. Zenith's smart energy systems automate this switching to minimize utility expenses. The system dynamically monitors utility rates and household demand, storing excess solar generation in high-cycle LFP batteries for discharge when grid power is most expensive.",
     },
   ]
 
@@ -672,7 +761,7 @@ function FooterSection({ onOpenModal }: { onOpenModal: () => void }) {
           {/* Center: Links */}
           <div className="flex flex-col items-start md:items-center gap-3">
             <a
-              href="#"
+              href="#resources"
               className="text-slate-400 hover:text-orange-500 transition-colors"
             >
               Tax Credit Guide 2026
@@ -720,8 +809,96 @@ export default function LandingPage() {
   const [modalOpen, setModalOpen] = useState(false)
   const [learnMoreOpen, setLearnMoreOpen] = useState(false)
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zenithsolar.com"
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ProfessionalService",
+        "@id": `${siteUrl}/#organization`,
+        "name": "Zenith Solar",
+        "url": siteUrl,
+        "logo": `${siteUrl}/icon.svg`,
+        "image": `${siteUrl}/placeholder.jpg`,
+        "description": "Stop renting your power. Own your energy with precision-engineered solar systems designed by certified engineers.",
+        "telephone": "",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Austin",
+          "addressRegion": "TX",
+          "addressCountry": "US"
+        },
+        "areaServed": [
+          { "@type": "AdministrativeArea", "name": "Texas" },
+          { "@type": "AdministrativeArea", "name": "Colorado" },
+          { "@type": "AdministrativeArea", "name": "Arizona" }
+        ]
+      },
+      {
+        "@type": "Service",
+        "@id": `${siteUrl}/#service`,
+        "name": "Zenith Solar Engineering Audit",
+        "provider": {
+          "@id": `${siteUrl}/#organization`
+        },
+        "description": "Comprehensive structural analysis including load calculations, irradiance mapping, and electrical infrastructure assessment."
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${siteUrl}/#faq`,
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Do solar panels damage your roof structure during installation?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. When designed by certified structural engineers to ASCE 7 load calculations with proper torque limits and flashed penetrations, solar mounting systems do not compromise roof integrity. Our audit evaluates decking integrity, rafter spacing, and remaining roof life."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much solar electricity do panels produce on cloudy days?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Between 10% and 25% of peak capacity. Modern N-Type TOPCon panels capture solar photons through dense cloud cover, and our design yields are modeled using 30-year local TMY3 weather profiles (Typical Meteorological Year)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the typical return on investment (ROI) payback period for solar?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Between 5 and 7 years for cash purchases, and immediate cash-flow positive for solar loans. The exact payback depends on local utility rates and sun exposure."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the degradation rate of TOPCon solar panels?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Less than 0.4% annually over a 30-year performance warranty. N-Type TOPCon cells resist Light Induced Degradation (LID) far better than legacy P-type PERC cells."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does time-of-use (TOU) optimization work with battery backup?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "By storing solar energy during off-peak hours and discharging it during high-tariff periods. Zenith's smart energy systems automate this switching to minimize utility expenses."
+            }
+          }
+        ]
+      }
+    ]
+  }
+
   return (
     <main className="min-h-screen bg-slate-900 text-foreground">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Navigation onOpenModal={() => setModalOpen(true)} />
       <LeadCaptureModal open={modalOpen} onOpenChange={setModalOpen} />
       <LearnMoreModal open={learnMoreOpen} onOpenChange={setLearnMoreOpen} />
@@ -730,6 +907,7 @@ export default function LandingPage() {
       <FeaturesSection />
       <PricingSection onOpenModal={() => setModalOpen(true)} />
       <ProvenResultsSection />
+      <TechnicalGuidesSection />
       <ObjectionRemovalSection />
       <FooterSection onOpenModal={() => setModalOpen(true)} />
     </main>
