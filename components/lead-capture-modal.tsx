@@ -94,10 +94,13 @@ export function LeadCaptureModal({
       resetForm()
       onOpenChange(false)
     } catch (err) {
-      toast.error("Something went wrong", {
-        description:
-          err instanceof Error ? err.message : "Please try again in a moment.",
-      })
+      const message =
+        err instanceof TypeError && err.message === "Failed to fetch"
+          ? "Could not reach the server. Please check your connection and try again."
+          : err instanceof Error
+            ? err.message
+            : "Please try again in a moment."
+      toast.error("Something went wrong", { description: message })
     } finally {
       setIsLoading(false)
     }
