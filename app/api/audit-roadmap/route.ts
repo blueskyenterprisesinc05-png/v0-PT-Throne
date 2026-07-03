@@ -74,12 +74,8 @@ export async function POST(req: NextRequest) {
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
   const hasRealServiceRoleKey = serviceRoleKey && !serviceRoleKey.startsWith("your-")
 
-  // Log DB failures but never block — always forward the lead to n8n.
   if (!supabaseResult.ok && hasRealServiceRoleKey) {
-    console.warn(
-      "[audit-roadmap] Supabase insert failed (proceeding to n8n):",
-      supabaseResult.error,
-    )
+    return NextResponse.json({ error: "Failed to save submission" }, { status: 500 })
   }
 
   try {
