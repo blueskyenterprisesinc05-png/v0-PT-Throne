@@ -899,7 +899,7 @@ function AISolarAdvisorSection() {
                   </div>
                   <div>
                     <p className="text-white font-semibold text-sm">Zenith AI Solar Advisor</p>
-                    <p className="text-green-400 text-xs">Online · Typically replies instantly</p>
+                    <p className="text-green-400 text-xs">🟢 Online · Replies instantly</p>
                   </div>
                 </div>
 
