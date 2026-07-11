@@ -35,8 +35,12 @@ import {
   Zap,
   ArrowRight,
   ChevronDown,
+  Bot,
+  MessageCircle,
+  Sparkles,
 } from "lucide-react"
 import { LeadCaptureModal } from "@/components/lead-capture-modal"
+import { VoiceflowWidget } from "@/components/voiceflow-widget"
 
 // Learn More Modal
 function LearnMoreModal({
@@ -110,6 +114,7 @@ function Navigation({ onOpenModal }: { onOpenModal: () => void }) {
     { href: "#method", label: "The Method" },
     { href: "#features", label: "System Features" },
     { href: "#pricing", label: "Investment Paths" },
+    { href: "#ai-advisor", label: "AI Advisor" },
   ]
 
   return (
@@ -804,6 +809,165 @@ function FooterSection({ onOpenModal }: { onOpenModal: () => void }) {
   )
 }
 
+// AI Solar Advisor Section
+function AISolarAdvisorSection() {
+  const features = [
+    { icon: <MessageCircle className="h-5 w-5 text-orange-400" />, text: "Answers any solar question instantly, 24/7" },
+    { icon: <Sparkles className="h-5 w-5 text-orange-400" />, text: "Collects your home details & energy usage" },
+    { icon: <Zap className="h-5 w-5 text-orange-400" />, text: "Sends a personalised quote estimate by email" },
+  ]
+
+  const handleOpenChat = () => {
+    if (typeof window !== "undefined" && window.voiceflow?.chat) {
+      window.voiceflow.chat.open()
+    }
+  }
+
+  return (
+    <section id="ai-advisor" className="relative py-24 overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-transparent" />
+
+      {/* Animated grid lines */}
+      <div
+        className="absolute inset-0 opacity-5"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(249,115,22,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(249,115,22,0.4) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
+
+      <div className="container relative z-10 mx-auto px-4">
+        <div className="max-w-5xl mx-auto">
+          {/* Badge */}
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium">
+              <Bot className="h-4 w-4" />
+              Powered by AI
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Left copy */}
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+                Get Your Solar Quote in{" "}
+                <span className="text-orange-500">Minutes,</span> Not Days
+              </h2>
+              <p className="text-slate-400 text-lg mb-8 leading-relaxed">
+                Our AI solar advisor works around the clock to answer your questions,
+                understand your energy needs, and send you a custom quote — all in one conversation.
+              </p>
+
+              <ul className="space-y-4 mb-10">
+                {features.map((f, i) => (
+                  <li key={i} className="flex items-center gap-3 text-slate-300">
+                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
+                      {f.icon}
+                    </div>
+                    <span>{f.text}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <button
+                id="open-ai-chat-btn"
+                onClick={handleOpenChat}
+                className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold text-lg shadow-[0_0_30px_rgba(249,115,22,0.4)] hover:shadow-[0_0_50px_rgba(249,115,22,0.6)] transition-all duration-300"
+              >
+                <Bot className="h-5 w-5" />
+                Chat with Our AI Advisor
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                {/* Pulse ring */}
+                <span className="absolute -inset-1 rounded-xl bg-orange-500/30 animate-ping opacity-30" />
+              </button>
+            </div>
+
+            {/* Right visual card */}
+            <div className="relative">
+              {/* Glowing card */}
+              <div className="relative rounded-2xl border border-orange-500/20 bg-slate-900/80 backdrop-blur-md p-6 shadow-[0_0_60px_rgba(249,115,22,0.15)]">
+                {/* Chat preview header */}
+                <div className="flex items-center gap-3 pb-4 border-b border-slate-700/60 mb-4">
+                  <div className="relative">
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-lg">
+                      <Sun className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-400 border-2 border-slate-900" />
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold text-sm">Zenith AI Solar Advisor</p>
+                    <p className="text-green-400 text-xs">Online · Typically replies instantly</p>
+                  </div>
+                </div>
+
+                {/* Sample chat bubbles */}
+                <div className="space-y-3">
+                  <div className="flex gap-2">
+                    <div className="h-7 w-7 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center flex-shrink-0 mt-1">
+                      <Sun className="h-3.5 w-3.5 text-orange-400" />
+                    </div>
+                    <div className="bg-slate-800 rounded-2xl rounded-tl-none px-4 py-3 text-sm text-slate-300 max-w-xs">
+                      Hi! 👋 I'm your AI solar advisor. What appliances do you run daily?
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 justify-end">
+                    <div className="bg-orange-500/90 rounded-2xl rounded-tr-none px-4 py-3 text-sm text-white max-w-xs">
+                      A fridge, 4 ACs, TV, and lights — I have a 3-bedroom home.
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <div className="h-7 w-7 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center flex-shrink-0 mt-1">
+                      <Sun className="h-3.5 w-3.5 text-orange-400" />
+                    </div>
+                    <div className="bg-slate-800 rounded-2xl rounded-tl-none px-4 py-3 text-sm text-slate-300 max-w-xs">
+                      Great! Based on that load, I'd estimate a 10kW system. Let me gather a few more details to send your free quote...
+                    </div>
+                  </div>
+
+                  {/* Typing indicator */}
+                  <div className="flex gap-2">
+                    <div className="h-7 w-7 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center flex-shrink-0">
+                      <Sun className="h-3.5 w-3.5 text-orange-400" />
+                    </div>
+                    <div className="bg-slate-800 rounded-2xl rounded-tl-none px-4 py-3 flex gap-1.5 items-center">
+                      <span className="h-2 w-2 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: "0ms" }} />
+                      <span className="h-2 w-2 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: "150ms" }} />
+                      <span className="h-2 w-2 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: "300ms" }} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Input bar */}
+                <div className="mt-4 flex items-center gap-2 bg-slate-800 rounded-xl px-4 py-3 border border-slate-700/60">
+                  <span className="text-slate-500 text-sm flex-1">Type your message...</span>
+                  <div className="h-8 w-8 rounded-lg bg-orange-500 flex items-center justify-center cursor-pointer hover:bg-orange-600 transition-colors">
+                    <ArrowRight className="h-4 w-4 text-white" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating stat badges */}
+              <div className="absolute -top-4 -right-4 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 shadow-lg flex items-center gap-2">
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <span className="text-white text-sm font-medium">4.9 / 5 satisfaction</span>
+              </div>
+              <div className="absolute -bottom-4 -left-4 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 shadow-lg flex items-center gap-2">
+                <Zap className="h-4 w-4 text-orange-400" />
+                <span className="text-white text-sm font-medium">Quote in &lt; 2 minutes</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 // Main Landing Page
 export default function LandingPage() {
   const [modalOpen, setModalOpen] = useState(false)
@@ -909,7 +1073,9 @@ export default function LandingPage() {
       <ProvenResultsSection />
       <TechnicalGuidesSection />
       <ObjectionRemovalSection />
+      <AISolarAdvisorSection />
       <FooterSection onOpenModal={() => setModalOpen(true)} />
+      <VoiceflowWidget />
     </main>
   )
 }
