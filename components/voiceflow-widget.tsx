@@ -23,7 +23,7 @@ export function VoiceflowWidget() {
       onLoad={() => {
         if (window.voiceflow?.chat) {
           window.voiceflow.chat.load({
-            verify: { projectID: "6a523b283336c4c7e2617dab" },
+            verify: { projectID: "6a53951ebc446f70628d45ab" },
             url: "https://general-runtime.voiceflow.com",
             voice: {
               url: "https://runtime-api.voiceflow.com",
