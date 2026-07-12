@@ -29,6 +29,13 @@ export function VoiceflowWidget() {
               url: "https://runtime-api.voiceflow.com",
             },
           })
+
+          // Auto-open the chat widget after it finishes loading
+          setTimeout(() => {
+            if (window.voiceflow?.chat) {
+              window.voiceflow.chat.open()
+            }
+          }, 1500)
         }
       }}
     />
