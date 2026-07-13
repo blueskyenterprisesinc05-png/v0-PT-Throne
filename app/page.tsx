@@ -625,8 +625,11 @@ function AISolarAdvisorSection() {
               </button>
             </div>
 
-            <div className="relative">
-              <div className="relative rounded-2xl border border-orange-500/20 bg-slate-900/80 backdrop-blur-md p-6 shadow-[0_0_60px_rgba(249,115,22,0.15)]">
+            <div className="relative group">
+              <div 
+                onClick={handleOpenChat}
+                className="relative rounded-2xl border border-orange-500/20 bg-slate-900/80 backdrop-blur-md p-6 shadow-[0_0_60px_rgba(249,115,22,0.15)] cursor-pointer hover:border-orange-500/50 hover:shadow-[0_0_60px_rgba(249,115,22,0.25)] transition-all"
+              >
                 <div className="flex items-center gap-3 pb-4 border-b border-slate-700/60 mb-4">
                   <div className="relative">
                     <div className="h-10 w-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-lg">
