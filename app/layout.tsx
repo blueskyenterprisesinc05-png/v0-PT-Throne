@@ -12,14 +12,14 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.woflbillion.com
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: 'Zenith Solar | Engineering-First Solar Solutions',
-  description: 'Stop renting your power. Own your energy with precision-engineered solar systems designed by certified engineers.',
+  title: 'Zenith Solar | Designed Around Your Energy Needs',
+  description: 'Every solar system begins with understanding how you use electricity. We engineer reliable solar solutions for Nigerian homes and businesses.',
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: 'Zenith Solar | Engineering-First Solar Solutions',
-    description: 'Stop renting your power. Own your energy with precision-engineered solar systems designed by certified engineers.',
+    title: 'Zenith Solar | Designed Around Your Energy Needs',
+    description: 'Every solar system begins with understanding how you use electricity. We engineer reliable solar solutions for Nigerian homes and businesses.',
     url: '/',
     siteName: 'Zenith Solar',
     images: [
@@ -35,8 +35,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Zenith Solar | Engineering-First Solar Solutions',
-    description: 'Stop renting your power. Own your energy with precision-engineered solar systems designed by certified engineers.',
+    title: 'Zenith Solar | Designed Around Your Energy Needs',
+    description: 'Every solar system begins with understanding how you use electricity. We engineer reliable solar solutions for Nigerian homes and businesses.',
     images: ['/placeholder.jpg'],
   },
   icons: {
