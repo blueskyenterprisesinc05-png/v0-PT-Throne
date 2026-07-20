@@ -3,16 +3,7 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Slider } from "@/components/ui/slider"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import {
   Sheet,
   SheetContent,
@@ -26,257 +17,28 @@ import {
 } from "@/components/ui/accordion"
 import {
   Menu,
-  ClipboardCheck,
-  Ruler,
-  Wrench,
-  Activity,
-  BatteryCharging,
-  Sun,
   Check,
-  Star,
-  Loader2,
   Zap,
   ArrowRight,
+  Bot,
+  MessageCircle,
+  Sparkles,
+  Sun,
+  ShieldCheck,
+  TrendingDown,
+  BatteryWarning,
+  HelpCircle,
+  Home,
+  Building2,
+  Factory,
+  GraduationCap,
+  Church,
+  Hotel
 } from "lucide-react"
+import { LeadCaptureModal } from "@/components/lead-capture-modal"
+import { VoiceflowWidget } from "@/components/voiceflow-widget"
 
-// Multi-Step Lead Capture Modal
-function LeadCaptureModal({
-  open,
-  onOpenChange,
-}: {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-}) {
-  const [step, setStep] = useState(1)
-  const [isLoading, setIsLoading] = useState(false)
-  const [formData, setFormData] = useState({
-    address: "",
-    monthlyBill: [150],
-    roofAge: "",
-    name: "",
-    email: "",
-    phone: "",
-  })
-
-  const handleSubmit = () => {
-    setIsLoading(true)
-    setTimeout(() => {
-      setIsLoading(false)
-      onOpenChange(false)
-      setStep(1)
-    }, 3000)
-  }
-
-  const resetAndClose = (isOpen: boolean) => {
-    if (!isOpen) {
-      setStep(1)
-      setIsLoading(false)
-    }
-    onOpenChange(isOpen)
-  }
-
-  return (
-    <Dialog open={open} onOpenChange={resetAndClose}>
-      <DialogContent className="sm:max-w-md">
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-12">
-            <Loader2 className="h-12 w-12 animate-spin text-orange-500" />
-            <p className="mt-4 text-lg font-medium">Running Engineering Audit...</p>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Analyzing your property specifications
-            </p>
-          </div>
-        ) : (
-          <>
-            <DialogHeader>
-              <DialogTitle>
-                {step === 1 && "Where is the property?"}
-                {step === 2 && "Energy Profile"}
-                {step === 3 && "Contact Details"}
-              </DialogTitle>
-              <DialogDescription>
-                Step {step} of 3
-              </DialogDescription>
-            </DialogHeader>
-
-            {step === 1 && (
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label htmlFor="address">Property Address</Label>
-                  <Input
-                    id="address"
-                    placeholder="123 Main St, City, State ZIP"
-                    value={formData.address}
-                    onChange={(e) =>
-                      setFormData({ ...formData, address: e.target.value })
-                    }
-                  />
-                </div>
-                <Button
-                  className="w-full bg-orange-500 hover:bg-orange-600 text-white"
-                  onClick={() => setStep(2)}
-                  disabled={!formData.address}
-                >
-                  Continue
-                </Button>
-              </div>
-            )}
-
-            {step === 2 && (
-              <div className="space-y-6 py-4">
-                <div className="space-y-4">
-                  <Label>Average Monthly Electric Bill: ${formData.monthlyBill[0]}</Label>
-                  <Slider
-                    value={formData.monthlyBill}
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, monthlyBill: value })
-                    }
-                    min={50}
-                    max={500}
-                    step={10}
-                    className="py-4"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="roofAge">Roof Age (years)</Label>
-                  <Input
-                    id="roofAge"
-                    type="number"
-                    placeholder="e.g., 5"
-                    value={formData.roofAge}
-                    onChange={(e) =>
-                      setFormData({ ...formData, roofAge: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="flex gap-3">
-                  <Button variant="outline" onClick={() => setStep(1)} className="flex-1">
-                    Back
-                  </Button>
-                  <Button
-                    className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
-                    onClick={() => setStep(3)}
-                    disabled={!formData.roofAge}
-                  >
-                    Continue
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {step === 3 && (
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
-                  <Input
-                    id="name"
-                    placeholder="Marcus Thorne"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="marcus@example.com"
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="(555) 123-4567"
-                    value={formData.phone}
-                    onChange={(e) =>
-                      setFormData({ ...formData, phone: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="flex gap-3">
-                  <Button variant="outline" onClick={() => setStep(2)} className="flex-1">
-                    Back
-                  </Button>
-                  <Button
-                    className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
-                    onClick={handleSubmit}
-                    disabled={!formData.name || !formData.email || !formData.phone}
-                  >
-                    Get My Audit
-                  </Button>
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </DialogContent>
-    </Dialog>
-  )
-}
-
-// Learn More Modal
-function LearnMoreModal({
-  open,
-  onOpenChange,
-}: {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-}) {
-  const reasons = [
-    {
-      title: "Engineering-First Approach",
-      description: "Unlike typical solar companies, we're led by certified engineers who analyze 47 data points before recommending a system.",
-    },
-    {
-      title: "No Salespeople, No Pressure",
-      description: "Our consultations focus on data and your specific needs—not aggressive sales tactics or inflated promises.",
-    },
-    {
-      title: "25-Year Performance Guarantee",
-      description: "We stand behind our systems with comprehensive warranties and ongoing monitoring support.",
-    },
-    {
-      title: "Transparent Pricing",
-      description: "No hidden fees or surprise costs. You see the full breakdown before signing anything.",
-    },
-  ]
-
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle className="text-xl">Why Choose Zenith Solar?</DialogTitle>
-          <DialogDescription>
-            Here's what sets us apart from the competition.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="space-y-4 py-4">
-          {reasons.map((reason, index) => (
-            <div key={index} className="flex gap-4">
-              <div className="flex-shrink-0 h-8 w-8 rounded-full bg-orange-500/10 flex items-center justify-center">
-                <Check className="h-4 w-4 text-orange-500" />
-              </div>
-              <div>
-                <h4 className="font-medium text-foreground">{reason.title}</h4>
-                <p className="text-sm text-muted-foreground mt-1">{reason.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </DialogContent>
-    </Dialog>
-  )
-}
-
-// Navigation Component
+// 1. Navigation
 function Navigation({ onOpenModal }: { onOpenModal: () => void }) {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -285,15 +47,15 @@ function Navigation({ onOpenModal }: { onOpenModal: () => void }) {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
     }
-    
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   const navLinks = [
-    { href: "#method", label: "The Method" },
-    { href: "#features", label: "System Features" },
-    { href: "#pricing", label: "Investment Paths" },
+    { href: "#projects", label: "Projects" },
+    { href: "#how-we-work", label: "How We Work" },
+    { href: "#services", label: "Services" },
+    { href: "#faq", label: "FAQ" },
   ]
 
   return (
@@ -305,12 +67,10 @@ function Navigation({ onOpenModal }: { onOpenModal: () => void }) {
       }`}
     >
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo */}
         <a href="#" className="text-xl font-semibold text-white tracking-tight">
           Zenith<span className="text-orange-500">Solar</span>
         </a>
 
-        {/* Desktop Nav Links */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <a
@@ -323,16 +83,14 @@ function Navigation({ onOpenModal }: { onOpenModal: () => void }) {
           ))}
         </div>
 
-        {/* Desktop CTA + Mobile Menu */}
         <div className="flex items-center gap-3">
           <Button
             onClick={onOpenModal}
-            className="bg-orange-500 hover:bg-orange-600 text-white font-medium shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 transition-all"
+            className="hidden sm:inline-flex bg-orange-500 hover:bg-orange-600 text-white font-medium shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 transition-all"
           >
-            Get Started
+            Get a Free Assessment
           </Button>
 
-          {/* Mobile Hamburger */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="icon" className="text-white">
@@ -351,6 +109,15 @@ function Navigation({ onOpenModal }: { onOpenModal: () => void }) {
                     {link.label}
                   </a>
                 ))}
+                <Button
+                  onClick={() => {
+                    setIsOpen(false)
+                    onOpenModal()
+                  }}
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white mt-4"
+                >
+                  Get a Free Assessment
+                </Button>
               </div>
             </SheetContent>
           </Sheet>
@@ -360,28 +127,28 @@ function Navigation({ onOpenModal }: { onOpenModal: () => void }) {
   )
 }
 
-// Hero Section
-function HeroSection({ onOpenModal, onLearnMore }: { onOpenModal: () => void; onLearnMore: () => void }) {
+// 2. Hero Section
+function HeroSection({ onOpenModal }: { onOpenModal: () => void }) {
+  const openChat = () => {
+    if (typeof window !== "undefined" && window.voiceflow?.chat) {
+      window.voiceflow.chat.open()
+    } else {
+      onOpenModal()
+    }
+  }
+
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
-      {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-orange-500/20 via-transparent to-transparent" />
       
       <div className="container relative z-10 mx-auto px-4 py-24 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-sm font-medium mb-8">
-          <Zap className="h-4 w-4" />
-          Engineering-First Solar Solutions
-        </div>
-        
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight text-balance max-w-4xl mx-auto">
-          Stop Renting Your Power.{" "}
-          <span className="text-orange-500">Own Your Energy.</span>
+          Every Solar System Begins With <span className="text-orange-500">Understanding Your Energy Needs.</span>
         </h1>
         
         <p className="mt-6 text-lg md:text-xl text-slate-400 max-w-2xl mx-auto text-pretty">
-          Precision-engineered solar systems designed by certified engineers. 
-          No salespeople. No gimmicks. Just science-backed energy independence.
+          We design solar systems that reduce generator dependence and provide reliable power for Nigerian homes and businesses.
         </p>
         
         <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
@@ -390,29 +157,53 @@ function HeroSection({ onOpenModal, onLearnMore }: { onOpenModal: () => void; on
             onClick={onOpenModal}
             className="bg-orange-500 hover:bg-orange-600 text-white text-lg px-8 py-6 shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 transition-all"
           >
-            Start Your Engineering Audit
+            Get a Free Solar Assessment
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
           <Button
             size="lg"
-            variant="default"
-            onClick={onLearnMore}
-            className="bg-white text-black hover:bg-slate-200 text-lg px-8 py-6 border-none"
-  >
-            Learn More
+            variant="outline"
+            onClick={openChat}
+            className="border-slate-500 bg-slate-800/50 text-white hover:bg-slate-700 hover:text-white text-lg px-8 py-6 shadow-none"
+          >
+            <MessageCircle className="mr-2 h-5 w-5" />
+            Talk to AI Advisor
           </Button>
         </div>
+        
+        <div className="mt-12 flex items-center justify-center gap-6 text-sm text-slate-400">
+          <a href="tel:+234000000000" className="hover:text-white transition-colors flex items-center gap-2">
+            Call Us
+          </a>
+          <span>•</span>
+          <a href="#" className="hover:text-white transition-colors flex items-center gap-2">
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  )
+}
 
-        {/* Stats */}
-        <div className="mt-20 grid grid-cols-3 gap-8 max-w-2xl mx-auto">
-          {[
-            { value: "2,847", label: "Systems Deployed" },
-            { value: "99.2%", label: "Uptime Rate" },
-            { value: "25yr", label: "Warranty" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <p className="text-3xl md:text-4xl font-bold text-white">{stat.value}</p>
-              <p className="text-sm text-slate-500 mt-1">{stat.label}</p>
+// 3. Common Problems We Solve
+function CommonProblemsSection() {
+  const problems = [
+    { icon: TrendingDown, text: "My electricity bills keep increasing." },
+    { icon: BatteryWarning, text: "My batteries don't last through the night." },
+    { icon: ShieldCheck, text: "My generator runs all day." },
+    { icon: HelpCircle, text: "I don't know what system size I actually need." },
+    { icon: Zap, text: "I already have solar, but it isn't enough." },
+  ]
+
+  return (
+    <section className="py-16 bg-slate-950 border-t border-slate-800">
+      <div className="container mx-auto px-4 max-w-5xl">
+        <p className="text-center text-slate-400 font-medium mb-8">COMMON PROBLEMS WE SOLVE</p>
+        <div className="flex flex-wrap justify-center gap-4">
+          {problems.map((prob, i) => (
+            <div key={i} className="flex items-center gap-3 bg-slate-900 border border-slate-800 rounded-full px-5 py-3 text-slate-300 text-sm">
+              <prob.icon className="h-4 w-4 text-orange-500" />
+              "{prob.text}"
             </div>
           ))}
         </div>
@@ -421,61 +212,90 @@ function HeroSection({ onOpenModal, onLearnMore }: { onOpenModal: () => void; on
   )
 }
 
-// The Thorne Method Section
-function MethodSection() {
-  const methods = [
-    {
-      icon: ClipboardCheck,
-      title: "Engineering Audit",
-      description:
-        "Comprehensive structural analysis including load calculations, irradiance mapping, and electrical infrastructure assessment. We evaluate 47 data points before presenting a solution.",
-    },
-    {
-      icon: Ruler,
-      title: "Custom Design",
-      description:
-        "CAD-drafted system layouts optimized for your specific roof geometry and shading profile. Every panel placement is calculated for maximum annual yield.",
-    },
-    {
-      icon: Wrench,
-      title: "Precision Install",
-      description:
-        "NABCEP-certified installation crews following strict QA protocols. Torque specifications, wire management, and commissioning verified at 12 checkpoints.",
-    },
+// 4. Why Zenith (The Zenith Difference)
+function WhyZenithSection() {
+  return (
+    <section className="py-24 bg-slate-900">
+      <div className="container mx-auto px-4 max-w-5xl">
+        <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div>
+            <p className="text-orange-500 font-medium mb-3">WHY ZENITH</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
+              No two homes use electricity the same way.
+            </h2>
+            <p className="text-lg text-slate-400 mb-6 leading-relaxed">
+              That's why we don't recommend a system until we understand yours. Every recommendation begins with measuring how your building actually uses electricity—not with choosing the most expensive equipment.
+            </p>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3 text-slate-300">
+                <Check className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                <span>Battery recommendations are based on your usage patterns—not fixed packages.</span>
+              </li>
+              <li className="flex items-start gap-3 text-slate-300">
+                <Check className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                <span>We design systems that optimize your lifetime cost, rather than maximizing your initial invoice.</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-8 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 blur-3xl rounded-full" />
+            <h3 className="text-xl font-semibold text-white mb-6">Independent Trust Signals</h3>
+            <div className="space-y-6 relative z-10">
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs text-slate-500 font-bold">CAC</div>
+                <div>
+                  <p className="text-white font-medium">Registered Company</p>
+                  <p className="text-sm text-slate-400">Corporate Affairs Commission</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs text-slate-500 font-bold">WTY</div>
+                <div>
+                  <p className="text-white font-medium">Verified Warranties</p>
+                  <p className="text-sm text-slate-400">Backed by manufacturer support</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs text-slate-500 font-bold">★ 4.9</div>
+                <div>
+                  <p className="text-white font-medium">Client Reviews</p>
+                  <p className="text-sm text-slate-400">Real feedback from actual installations</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// 5. What We Do (Services)
+function ServicesSection() {
+  const services = [
+    { title: "Energy Audits", desc: "Understanding your electricity usage before any equipment is proposed." },
+    { title: "System Design", desc: "Properly sizing systems to match your budget and load requirements." },
+    { title: "Installation", desc: "Overseeing deployment to ensure safety and long-term reliability." },
+    { title: "Maintenance", desc: "Fixing poorly installed systems, battery upgrades, and inspections." },
+    { title: "Consulting", desc: "Independent advice before you make a significant solar investment." },
   ]
 
   return (
-    <section id="method" className="py-24 bg-slate-900">
+    <section id="services" className="py-24 bg-slate-800">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <p className="text-orange-500 font-medium mb-3">THE THORNE METHOD</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-white text-balance">
-            Engineering Excellence at Every Stage
-          </h2>
-          <p className="mt-4 text-slate-400 max-w-2xl mx-auto">
-            Our systematic approach eliminates guesswork and ensures optimal system performance for decades.
-          </p>
+          <p className="text-orange-500 font-medium mb-3">WHAT WE DO</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-white">Expertise Across the Board</h2>
         </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {methods.map((method, index) => (
-            <Card
-              key={method.title}
-              className="bg-slate-800/50 border-slate-700 hover:border-orange-500/50 transition-colors"
-            >
-              <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-orange-500/10 flex items-center justify-center mb-4">
-                  <method.icon className="h-6 w-6 text-orange-500" />
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-mono text-slate-500">0{index + 1}</span>
-                  <CardTitle className="text-white">{method.title}</CardTitle>
-                </div>
+        <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
+          {services.map((s, i) => (
+            <Card key={i} className="bg-slate-900 border-slate-700 text-center hover:border-orange-500/30 transition-colors">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg text-white">{s.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-slate-400 leading-relaxed">
-                  {method.description}
-                </CardDescription>
+                <p className="text-sm text-slate-400">{s.desc}</p>
               </CardContent>
             </Card>
           ))}
@@ -485,287 +305,216 @@ function MethodSection() {
   )
 }
 
-// Bento Grid Features Section
-function FeaturesSection() {
+// 6. Who We Help (Markets)
+function WhoWeHelpSection() {
+  const markets = [
+    { icon: Home, label: "Homes" },
+    { icon: Building2, label: "Businesses" },
+    { icon: GraduationCap, label: "Schools" },
+    { icon: Hotel, label: "Hotels" },
+    { icon: Church, label: "Churches" },
+    { icon: Factory, label: "Factories" },
+  ]
+
   return (
-    <section id="features" className="py-24 bg-slate-800">
+    <section className="py-16 bg-slate-900 border-t border-slate-800">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <p className="text-orange-500 font-medium mb-3">SYSTEM FEATURES</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-white text-balance">
-            Technology That Performs
-          </h2>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Smart Monitoring - Large Card */}
-          <Card className="md:col-span-2 lg:col-span-2 bg-slate-900 border-slate-700 overflow-hidden">
-            <CardHeader className="pb-0">
-              <div className="h-12 w-12 rounded-lg bg-orange-500/10 flex items-center justify-center mb-4">
-                <Activity className="h-6 w-6 text-orange-500" />
-              </div>
-              <CardTitle className="text-white text-2xl">Smart Monitoring</CardTitle>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <CardDescription className="text-slate-400 text-base leading-relaxed">
-                Real-time performance analytics with panel-level monitoring. Track production, 
-                consumption, and grid export from any device. Automatic fault detection alerts 
-                you before issues impact output. Our ML algorithms predict maintenance needs 
-                based on weather patterns and degradation curves.
-              </CardDescription>
-              <div className="mt-6 grid grid-cols-3 gap-4">
-                {["Panel-Level Data", "Predictive Alerts", "Mobile App"].map((feature) => (
-                  <div key={feature} className="flex items-center gap-2 text-sm text-slate-300">
-                    <Check className="h-4 w-4 text-orange-500 flex-shrink-0" />
-                    {feature}
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Battery Backup */}
-          <Card className="bg-slate-900 border-slate-700">
-            <CardHeader>
-              <div className="h-12 w-12 rounded-lg bg-orange-500/10 flex items-center justify-center mb-4">
-                <BatteryCharging className="h-6 w-6 text-orange-500" />
-              </div>
-              <CardTitle className="text-white">Battery Backup</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="text-slate-400 leading-relaxed">
-                LFP chemistry batteries rated for 6,000+ cycles. Seamless grid-independent 
-                operation during outages. Configurable backup priorities and time-of-use optimization.
-              </CardDescription>
-            </CardContent>
-          </Card>
-
-          {/* TopCon Panels */}
-          <Card className="md:col-span-2 lg:col-span-3 bg-slate-900 border-slate-700">
-            <div className="grid md:grid-cols-2 gap-6">
-              <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-orange-500/10 flex items-center justify-center mb-4">
-                  <Sun className="h-6 w-6 text-orange-500" />
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
+          <span className="text-slate-400 font-medium">WHO WE HELP:</span>
+          <div className="flex flex-wrap justify-center gap-8">
+            {markets.map((m, i) => (
+              <div key={i} className="flex flex-col items-center gap-2">
+                <div className="h-12 w-12 rounded-full bg-slate-800 flex items-center justify-center">
+                  <m.icon className="h-5 w-5 text-slate-300" />
                 </div>
-                <CardTitle className="text-white text-2xl">TOPCon Panel Technology</CardTitle>
-                <CardDescription className="text-slate-400 text-base leading-relaxed mt-4">
-                  N-type tunnel oxide passivated contact cells delivering 22.5%+ efficiency. 
-                  Superior low-light performance and temperature coefficient. Bifacial design 
-                  captures reflected light for up to 10% additional yield.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex items-center">
-                <div className="grid grid-cols-2 gap-6 w-full">
-                  {[
-                    { value: "22.5%", label: "Panel Efficiency" },
-                    { value: "0.29%/°C", label: "Temp Coefficient" },
-                    { value: "30yr", label: "Performance Warranty" },
-                    { value: "N-Type", label: "Cell Technology" },
-                  ].map((spec) => (
-                    <div key={spec.label} className="text-center p-4 rounded-lg bg-slate-800">
-                      <p className="text-2xl font-bold text-orange-500">{spec.value}</p>
-                      <p className="text-xs text-slate-500 mt-1">{spec.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </div>
-          </Card>
+                <span className="text-sm text-slate-400">{m.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   )
 }
 
-// Pricing Section
-function PricingSection({ onOpenModal }: { onOpenModal: () => void }) {
-  const plans = [
-    {
-      name: "Cash Purchase",
-      description: "Maximum long-term savings",
-      price: "$18,500",
-      priceNote: "Average system cost after federal tax credit",
-      features: [
-        "30% Federal Tax Credit",
-        "Immediate ownership",
-        "Highest ROI over 25 years",
-        "No monthly payments",
-        "Full warranty coverage",
-      ],
-      highlight: false,
-    },
-    {
-      name: "Solar Loan",
-      description: "Own your system from day one",
-      price: "$89/mo",
-      priceNote: "Typical 20-year term at 5.99% APR",
-      features: [
-        "30% Federal Tax Credit eligible",
-        "Build equity immediately",
-        "Fixed monthly payments",
-        "Own after payoff",
-        "Transferable to new owner",
-      ],
-      highlight: true,
-    },
-    {
-      name: "PPA",
-      description: "Zero upfront, immediate savings",
-      price: "$0.12/kWh",
-      priceNote: "Locked rate for 25 years",
-      features: [
-        "No upfront cost",
-        "Day-one savings",
-        "Maintenance included",
-        "Performance guaranteed",
-        "Purchase option available",
-      ],
-      highlight: false,
-    },
+// 7. What Happens During Your Assessment
+function AssessmentSection({ onOpenModal }: { onOpenModal: () => void }) {
+  const deliverables = [
+    "Energy usage review",
+    "Recommended system size",
+    "Battery capacity recommendation",
+    "Estimated backup duration",
+    "Equipment recommendations",
+    "Estimated installation timeline",
+    "Opportunity to ask questions",
   ]
 
   return (
-    <section id="pricing" className="py-24 bg-slate-900">
+    <section className="py-24 bg-slate-950">
+      <div className="container mx-auto px-4 max-w-4xl">
+        <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-3xl p-8 md:p-12 shadow-2xl">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl font-bold text-white mb-4">What Happens During Your Assessment</h2>
+              <p className="text-slate-400 mb-8">
+                We provide clarity before you commit. Here is exactly what we will help you understand about your property.
+              </p>
+              <Button onClick={onOpenModal} className="bg-orange-500 hover:bg-orange-600 text-white">
+                Request Assessment
+              </Button>
+            </div>
+            <div className="bg-slate-900/50 p-6 rounded-2xl border border-slate-700/50">
+              <ul className="space-y-3">
+                {deliverables.map((item, i) => (
+                  <li key={i} className="flex items-center gap-3 text-slate-200">
+                    <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                      <Check className="h-3 w-3 text-green-500" />
+                    </div>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// 8. How We Work (Process)
+function ProcessSection() {
+  const steps = [
+    { title: "Understand", desc: "We calculate how your building actually uses electricity." },
+    { title: "Design", desc: "We size the system around your budget and backup needs." },
+    { title: "Build", desc: "We oversee the installation to ensure quality and safety." },
+    { title: "Support", desc: "We provide ongoing maintenance and system optimization." },
+  ]
+
+  return (
+    <section id="how-we-work" className="py-24 bg-slate-900">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <p className="text-orange-500 font-medium mb-3">INVESTMENT PATHS</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-white text-balance">
-            Choose Your Path to Energy Independence
-          </h2>
-          <p className="mt-4 text-slate-400 max-w-2xl mx-auto">
-            Three proven financing structures. Each engineered to maximize your return.
+          <p className="text-orange-500 font-medium mb-3">HOW WE WORK</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">A Proven Methodology</h2>
+          <p className="text-slate-400 max-w-2xl mx-auto">
+            Every project follows the same process to ensure the system matches your needs—not a predefined package.
           </p>
         </div>
-
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {plans.map((plan) => (
-            <Card
-              key={plan.name}
-              className={`relative ${
-                plan.highlight
-                  ? "bg-gradient-to-b from-orange-500/10 to-slate-900 border-orange-500/50"
-                  : "bg-slate-800/50 border-slate-700"
-              }`}
-            >
-              {plan.highlight && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-orange-500 text-white text-xs font-medium px-3 py-1 rounded-full">
-                    Most Popular
-                  </span>
-                </div>
+        
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+          {steps.map((step, i) => (
+            <div key={i} className="relative">
+              {i < steps.length - 1 && (
+                <div className="hidden md:block absolute top-6 left-1/2 w-full h-px bg-slate-700" />
               )}
-              <CardHeader className="text-center pb-2">
-                <CardTitle className="text-white">{plan.name}</CardTitle>
-                <CardDescription className="text-slate-400">
-                  {plan.description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="text-center">
-                <div className="py-4">
-                  <p className="text-4xl font-bold text-white">{plan.price}</p>
-                  <p className="text-sm text-slate-500 mt-2">{plan.priceNote}</p>
-                </div>
-                <ul className="space-y-3 text-left mt-6">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3 text-sm text-slate-300">
-                      <Check className="h-4 w-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  onClick={onOpenModal}
-                  className={`w-full mt-8 ${
-                    plan.highlight
-                      ? "bg-orange-500 hover:bg-orange-600 text-white"
-                      : "bg-slate-700 hover:bg-slate-600 text-white"
-                  }`}
-                >
-                  Get Custom Quote
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// Proven Results Section
-function ProvenResultsSection() {
-  const stats = [
-    { value: "4.2 GWh", label: "Clean Energy Produced" },
-    { value: "12,000", label: "Trees Planted Equivalent" },
-    { value: "$2,850", label: "Avg. Annual Savings" },
-  ]
-
-  const testimonials = [
-    {
-      quote:
-        "The engineering audit caught a structural issue my previous installer missed entirely. Zenith&apos;s methodical approach gave me confidence in every recommendation.",
-      author: "Dr. Sarah Chen",
-      location: "Austin, TX",
-      rating: 5,
-    },
-    {
-      quote:
-        "As a structural engineer myself, I scrutinize everything. Their load calculations and mounting specifications met standards I rarely see in residential solar.",
-      author: "Michael Torres, P.E.",
-      location: "Denver, CO",
-      rating: 5,
-    },
-    {
-      quote:
-        "Three years in and my system is producing 4% above projections. The monitoring dashboard keeps me informed without being overwhelming.",
-      author: "Jennifer Walsh",
-      location: "Phoenix, AZ",
-      rating: 5,
-    },
-  ]
-
-  return (
-    <section id="results" className="py-24 bg-slate-800">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <p className="text-orange-500 font-medium mb-3">PROVEN RESULTS</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-white text-balance">
-            Engineered Performance, Measured Impact
-          </h2>
-        </div>
-
-        {/* Stats Bar */}
-        <div className="grid md:grid-cols-3 gap-8 mb-20 p-8 rounded-2xl bg-slate-900/50 border border-slate-700">
-          {stats.map((stat) => (
-            <div key={stat.label} className="text-center">
-              <p className="text-4xl md:text-5xl font-bold text-orange-500">{stat.value}</p>
-              <p className="text-slate-400 mt-2">{stat.label}</p>
+              <div className="relative z-10 bg-slate-900 border border-slate-700 h-12 w-12 rounded-full flex items-center justify-center mx-auto mb-4 text-orange-500 font-bold">
+                {i + 1}
+              </div>
+              <div className="text-center">
+                <h3 className="text-white font-semibold text-lg mb-2">{step.title}</h3>
+                <p className="text-sm text-slate-400">{step.desc}</p>
+              </div>
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  )
+}
 
-        {/* Testimonials */}
-        <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial) => (
-            <Card key={testimonial.author} className="bg-slate-900 border-slate-700">
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex gap-1">
-                    {Array.from({ length: testimonial.rating }).map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-orange-500 text-orange-500" />
-                    ))}
+// 9. Featured Projects
+function ProjectsSection() {
+  const projects = [
+    {
+      location: "Lagos (Residential)",
+      stats: { size: "15 kW", battery: "25 kWh", backup: "24 hrs", outcome: "₦450k/mo savings" },
+      story: {
+        problem: "Frequent grid collapses forced reliance on two diesel generators.",
+        assessment: "Identified high starting loads from legacy AC units.",
+        design: "Specified hybrid inverters capable of handling high surge currents.",
+        installation: "Rerouted critical loads to a dedicated subpanel.",
+        result: "Reduced generator usage from 12 hours/day to less than 1 hour/week."
+      }
+    },
+    {
+      location: "Abuja (Commercial)",
+      stats: { size: "40 kW", battery: "60 kWh", backup: "10 hrs", outcome: "Uninterrupted operations" },
+      story: {
+        problem: "Server room downtime was costing the business clients.",
+        assessment: "Measured peak load patterns during business hours vs overnight.",
+        design: "Prioritized solar production for daytime cooling, batteries for night servers.",
+        installation: "Seamless integration with existing automated transfer switches.",
+        result: "Zero downtime reported over the last 14 months."
+      }
+    }
+  ]
+
+  return (
+    <section id="projects" className="py-24 bg-slate-800">
+      <div className="container mx-auto px-4 max-w-6xl">
+        <div className="text-center mb-16">
+          <p className="text-orange-500 font-medium mb-3">PROOF OF PERFORMANCE</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Featured Projects</h2>
+          <p className="text-slate-400">Real problems solved with verifiable results.</p>
+        </div>
+
+        <div className="space-y-12">
+          {projects.map((p, idx) => (
+            <Card key={idx} className="bg-slate-900 border-slate-700 overflow-hidden">
+              <div className="grid md:grid-cols-3 gap-0">
+                {/* Stats Panel */}
+                <div className="bg-slate-950 p-8 border-b md:border-b-0 md:border-r border-slate-800 flex flex-col justify-center">
+                  <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-orange-500" />
+                    {p.location}
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex justify-between border-b border-slate-800 pb-2">
+                      <span className="text-slate-500 text-sm">System Size</span>
+                      <span className="text-white font-medium text-sm">{p.stats.size}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-slate-800 pb-2">
+                      <span className="text-slate-500 text-sm">Battery Capacity</span>
+                      <span className="text-white font-medium text-sm">{p.stats.battery}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-slate-800 pb-2">
+                      <span className="text-slate-500 text-sm">Backup Duration</span>
+                      <span className="text-white font-medium text-sm">{p.stats.backup}</span>
+                    </div>
+                    <div className="flex justify-between pt-2">
+                      <span className="text-orange-500 font-semibold text-sm">Main Outcome</span>
+                      <span className="text-orange-400 font-medium text-sm text-right max-w-[120px]">{p.stats.outcome}</span>
+                    </div>
                   </div>
-                  <span className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full">
-                    <Check className="h-3 w-3" />
-                    Verified Homeowner
-                  </span>
                 </div>
-                <p className="text-slate-300 leading-relaxed">&ldquo;{testimonial.quote}&rdquo;</p>
-                <div className="mt-6 pt-4 border-t border-slate-800">
-                  <p className="font-medium text-white">{testimonial.author}</p>
-                  <p className="text-sm text-slate-500">{testimonial.location}</p>
+                
+                {/* Story Panel */}
+                <div className="md:col-span-2 p-8">
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-xs font-bold text-slate-500 uppercase mb-1">Problem</p>
+                      <p className="text-sm text-slate-300">{p.story.problem}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-500 uppercase mb-1">Assessment</p>
+                      <p className="text-sm text-slate-300">{p.story.assessment}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-500 uppercase mb-1">Design</p>
+                      <p className="text-sm text-slate-300">{p.story.design}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-500 uppercase mb-1">Installation</p>
+                      <p className="text-sm text-slate-300">{p.story.installation}</p>
+                    </div>
+                    <div className="bg-orange-500/10 p-3 rounded-lg border border-orange-500/20 mt-4">
+                      <p className="text-xs font-bold text-orange-500 uppercase mb-1">Result</p>
+                      <p className="text-sm text-orange-200">{p.story.result}</p>
+                    </div>
+                  </div>
                 </div>
-              </CardContent>
+              </div>
             </Card>
           ))}
         </div>
@@ -774,51 +523,42 @@ function ProvenResultsSection() {
   )
 }
 
-// Objection Removal FAQ Section
-function ObjectionRemovalSection() {
+// 10. Technical FAQ
+function FAQSection() {
   const faqs = [
     {
-      question: "Will solar installation damage my roof structure?",
-      answer:
-        "This is the most common concern I hear—and it's valid. The data is clear: properly engineered installations with flashed penetrations and correct torque specifications maintain roof integrity for 25+ years. Our audit includes load calculations per ASCE 7 standards and a detailed roof condition assessment. We evaluate decking integrity, rafter spacing, and remaining roof life. If your roof has less than 10 years remaining, I'll tell you directly—we reroof first or we don't install. Every mounting point is sealed with industry-standard flashing that actually improves weather resistance at those locations.",
+      q: "Should I buy batteries now or add them later?",
+      a: "It depends on your current grid stability. If you face frequent outages, a hybrid inverter with batteries is essential now. If you have stable grid power but want to hedge against rising tariffs, you can start with a grid-tied system and retrofit batteries later. We assess this during our consultation."
     },
     {
-      question: "What happens to production on cloudy days?",
-      answer:
-        "Solar panels don't require direct sunlight—they respond to photons, which penetrate cloud cover. On overcast days, expect 10-25% of peak output depending on cloud density. The engineering math accounts for this: our irradiance models use TMY3 data (Typical Meteorological Year) incorporating 30 years of local weather patterns. Your annual production estimate already factors in average cloudy days for your location. Germany, with weather comparable to Seattle, is the fourth-largest solar market globally. The technology works. The question is whether the economics work for your specific situation—that's what the engineering audit determines.",
+      q: "Can solar replace my generator completely?",
+      a: "Yes, but doing so requires properly sizing your battery bank for cloudy days and overnight usage. For heavy commercial loads, we often design solar to handle the baseline load and keep a smaller generator for emergency backup during prolonged bad weather. We model both scenarios for you."
     },
     {
-      question: "What's the realistic ROI timeline?",
-      answer:
-        "I won't give you a generic answer because ROI varies significantly by location, utility rates, and financing choice. Here's the framework: For cash purchases in regions with $0.14+/kWh rates and good sun exposure, expect 5-7 year payback with 15-20% annual returns thereafter. Loan financing extends payback to 8-12 years but provides immediate positive cash flow. PPA delivers day-one savings with no ownership benefits. Our engineering audit provides a detailed 25-year cash flow projection using your actual utility data, local incentives, and equipment degradation curves. No assumptions—just math.",
+      q: "Can I upgrade an existing, poorly performing system?",
+      a: "Absolutely. We frequently audit existing installations. Often, the issue is undersized cabling, incorrect inverter settings, or depleted batteries. We can diagnose the bottleneck and propose a targeted upgrade path rather than replacing everything."
     },
+    {
+      q: "Do I need to replace my roof first?",
+      a: "We conduct a roof integrity check before any installation. If your roof has less than 10 years of life remaining or shows structural weakness, we will advise repairing or replacing it before mounting panels to prevent costly removal and re-installation later."
+    }
   ]
 
   return (
     <section id="faq" className="py-24 bg-slate-900">
       <div className="container mx-auto px-4 max-w-3xl">
         <div className="text-center mb-16">
-          <p className="text-orange-500 font-medium mb-3">OBJECTION REMOVAL</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-white text-balance">
-            {"Let's Address Your Concerns Directly"}
-          </h2>
-          <p className="mt-4 text-slate-400">
-            Engineering answers backed by data, not sales pitches.
-          </p>
+          <p className="text-orange-500 font-medium mb-3">PRACTICAL QUESTIONS</p>
+          <h2 className="text-3xl font-bold text-white">What You Need to Know</h2>
         </div>
-
         <Accordion type="single" collapsible className="space-y-4">
           {faqs.map((faq, index) => (
-            <AccordionItem
-              key={index}
-              value={`item-${index}`}
-              className="bg-slate-800/50 border border-slate-700 rounded-lg px-6"
-            >
+            <AccordionItem key={index} value={`item-${index}`} className="bg-slate-800/50 border border-slate-700 rounded-lg px-6">
               <AccordionTrigger className="text-white hover:text-orange-500 text-left font-medium">
-                {faq.question}
+                {faq.q}
               </AccordionTrigger>
               <AccordionContent className="text-slate-400 leading-relaxed">
-                {faq.answer}
+                {faq.a}
               </AccordionContent>
             </AccordionItem>
           ))}
@@ -828,95 +568,202 @@ function ObjectionRemovalSection() {
   )
 }
 
-// Footer Section
-function FooterSection({ onOpenModal }: { onOpenModal: () => void }) {
-  const [email, setEmail] = useState("")
+// 11. AI Solar Advisor Section (Kept as is, minor text tweaks to match promise)
+function AISolarAdvisorSection() {
+  const features = [
+    { icon: <MessageCircle className="h-5 w-5 text-orange-400" />, text: "Answers your specific questions instantly, 24/7" },
+    { icon: <Sparkles className="h-5 w-5 text-orange-400" />, text: "Collects details about your property & usage" },
+    { icon: <Zap className="h-5 w-5 text-orange-400" />, text: "Recommends the right next steps for you" },
+  ]
 
-  const handleQuickAudit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (email) {
-      onOpenModal()
-      setEmail("")
+  const handleOpenChat = () => {
+    if (typeof window !== "undefined" && window.voiceflow?.chat) {
+      window.voiceflow.chat.open()
     }
   }
 
   return (
+    <section id="ai-advisor" className="relative py-24 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-transparent" />
+      <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "linear-gradient(rgba(249,115,22,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(249,115,22,0.4) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
+
+      <div className="container relative z-10 mx-auto px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium">
+              <Bot className="h-4 w-4" />
+              Powered by AI
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+                Get Personalized Guidance in <span className="text-orange-500">Minutes</span>
+              </h2>
+              <p className="text-slate-400 text-lg mb-8 leading-relaxed">
+                Describe your situation to our AI Solar Advisor. It will help us understand your needs before we recommend a tailored solution.
+              </p>
+
+              <ul className="space-y-4 mb-10">
+                {features.map((f, i) => (
+                  <li key={i} className="flex items-center gap-3 text-slate-300">
+                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
+                      {f.icon}
+                    </div>
+                    <span>{f.text}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <button onClick={handleOpenChat} className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold text-lg shadow-[0_0_30px_rgba(249,115,22,0.4)] hover:shadow-[0_0_50px_rgba(249,115,22,0.6)] transition-all duration-300">
+                <Bot className="h-5 w-5" />
+                Talk to AI Advisor
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                <span className="absolute -inset-1 rounded-xl bg-orange-500/30 animate-ping opacity-30" />
+              </button>
+            </div>
+
+            <div className="relative group">
+              <div 
+                onClick={handleOpenChat}
+                className="relative rounded-2xl border border-orange-500/20 bg-slate-900/80 backdrop-blur-md p-6 shadow-[0_0_60px_rgba(249,115,22,0.15)] cursor-pointer hover:border-orange-500/50 hover:shadow-[0_0_60px_rgba(249,115,22,0.25)] transition-all"
+              >
+                <div className="flex items-center gap-3 pb-4 border-b border-slate-700/60 mb-4">
+                  <div className="relative">
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-lg">
+                      <Sun className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-400 border-2 border-slate-900" />
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold text-sm">Zenith AI Solar Advisor</p>
+                    <p className="text-green-400 text-xs">🟢 Online · Replies instantly</p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex gap-2">
+                    <div className="h-7 w-7 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center flex-shrink-0 mt-1">
+                      <Sun className="h-3.5 w-3.5 text-orange-400" />
+                    </div>
+                    <div className="bg-slate-800 rounded-2xl rounded-tl-none px-4 py-3 text-sm text-slate-300 max-w-xs">
+                      Hi! 👋 I'm Zenith's AI Advisor. I'll ask a few questions about your property and usage before recommending a suitable solution.
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 justify-end">
+                    <div className="bg-orange-500/90 rounded-2xl rounded-tr-none px-4 py-3 text-sm text-white max-w-xs">
+                      I have a 3-bedroom home and my generator runs all day.
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <div className="h-7 w-7 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center flex-shrink-0 mt-1">
+                      <Sun className="h-3.5 w-3.5 text-orange-400" />
+                    </div>
+                    <div className="bg-slate-800 rounded-2xl rounded-tl-none px-4 py-3 text-sm text-slate-300 max-w-xs">
+                      I can help with that. What heavy appliances (like ACs or pumps) do you typically run?
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex items-center gap-2 bg-slate-800 rounded-xl px-4 py-3 border border-slate-700/60">
+                  <span className="text-slate-500 text-sm flex-1">Type your message...</span>
+                  <div className="h-8 w-8 rounded-lg bg-orange-500 flex items-center justify-center cursor-pointer hover:bg-orange-600 transition-colors">
+                    <ArrowRight className="h-4 w-4 text-white" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// 12. Footer
+function FooterSection() {
+  return (
     <footer className="py-16 bg-slate-950 border-t border-slate-800">
-      <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-3 gap-12 items-start">
-          {/* Left: Logo + Tagline */}
-          <div>
+      <div className="container mx-auto px-4 max-w-6xl">
+        <div className="grid md:grid-cols-4 gap-12 items-start">
+          <div className="md:col-span-2">
             <h3 className="text-xl font-semibold text-white mb-3">
               Zenith<span className="text-orange-500">Solar</span>
             </h3>
-            <p className="text-slate-400 leading-relaxed">
-              Engineering a brighter, independent grid.
+            <p className="text-slate-400 leading-relaxed mb-6 max-w-md">
+              We design solar systems that reduce generator dependence and provide reliable power for Nigerian homes and businesses.
             </p>
+            <div className="flex flex-col gap-2">
+              <a href="tel:+234000000000" className="text-slate-300 hover:text-white font-medium">+234 (0) 000 000 0000</a>
+              <a href="mailto:hello@zenithsolar.com.ng" className="text-slate-300 hover:text-white font-medium">hello@zenithsolar.com.ng</a>
+            </div>
           </div>
 
-          {/* Center: Links */}
-          <div className="flex flex-col items-start md:items-center gap-3">
-            <a
-              href="#"
-              className="text-slate-400 hover:text-orange-500 transition-colors"
-            >
-              Tax Credit Guide 2026
-            </a>
-            <a
-              href="#method"
-              className="text-slate-400 hover:text-orange-500 transition-colors"
-            >
-              How it Works
-            </a>
+          <div>
+            <p className="text-white font-medium mb-4">Quick Links</p>
+            <ul className="space-y-3">
+              <li><a href="#projects" className="text-slate-400 hover:text-orange-500 transition-colors">Projects</a></li>
+              <li><a href="#services" className="text-slate-400 hover:text-orange-500 transition-colors">Services</a></li>
+              <li><a href="#how-we-work" className="text-slate-400 hover:text-orange-500 transition-colors">How We Work</a></li>
+              <li><a href="#faq" className="text-slate-400 hover:text-orange-500 transition-colors">FAQ</a></li>
+            </ul>
           </div>
 
-          {/* Right: Quick Audit Form */}
-          <div className="flex flex-col items-start md:items-end">
-            <p className="text-white font-medium mb-3">Quick Audit</p>
-            <form onSubmit={handleQuickAudit} className="flex gap-3 w-full md:w-auto">
-              <Input
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-500 md:w-48"
-              />
-              <Button
-                type="submit"
-                className="bg-orange-500 hover:bg-orange-600 text-white flex-shrink-0 hover:shadow-[0_0_20px_rgba(249,115,22,0.3)] transition-shadow"
-              >
-                Start
-              </Button>
-            </form>
+          <div>
+            <p className="text-white font-medium mb-4">Quality & Trust</p>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              We recommend equipment based on project requirements and work with reputable global manufacturers to ensure long-term reliability.
+            </p>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
-          <p>&copy; {new Date().getFullYear()} Zenith Solar. Engineering excellence in every installation.</p>
+          <p>&copy; {new Date().getFullYear()} Zenith Solar. All rights reserved.</p>
         </div>
       </div>
     </footer>
   )
 }
 
-// Main Landing Page
 export default function LandingPage() {
   const [modalOpen, setModalOpen] = useState(false)
-  const [learnMoreOpen, setLearnMoreOpen] = useState(false)
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.woflbillion.com.ng"
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Zenith Solar",
+    "url": siteUrl,
+    "logo": `${siteUrl}/icon.svg`,
+    "description": "Smart Solar Engineering for Homes and Businesses Across Nigeria.",
+    "areaServed": [
+      { "@type": "AdministrativeArea", "name": "Nigeria" }
+    ]
+  }
 
   return (
     <main className="min-h-screen bg-slate-900 text-foreground">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Navigation onOpenModal={() => setModalOpen(true)} />
       <LeadCaptureModal open={modalOpen} onOpenChange={setModalOpen} />
-      <LearnMoreModal open={learnMoreOpen} onOpenChange={setLearnMoreOpen} />
-      <HeroSection onOpenModal={() => setModalOpen(true)} onLearnMore={() => setLearnMoreOpen(true)} />
-      <MethodSection />
-      <FeaturesSection />
-      <PricingSection onOpenModal={() => setModalOpen(true)} />
-      <ProvenResultsSection />
-      <ObjectionRemovalSection />
-      <FooterSection onOpenModal={() => setModalOpen(true)} />
+      
+      <HeroSection onOpenModal={() => setModalOpen(true)} />
+      <CommonProblemsSection />
+      <WhyZenithSection />
+      <ServicesSection />
+      <WhoWeHelpSection />
+      <AssessmentSection onOpenModal={() => setModalOpen(true)} />
+      <ProcessSection />
+      <ProjectsSection />
+      <FAQSection />
+      <AISolarAdvisorSection />
+      <FooterSection />
+      
+      <VoiceflowWidget />
     </main>
   )
 }
