@@ -35,11 +35,33 @@ import {
   Church,
   Hotel
 } from "lucide-react"
-import { LeadCaptureModal } from "@/components/lead-capture-modal"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { trackEvent } from "@/lib/analytics"
 import { VoiceflowWidget } from "@/components/voiceflow-widget"
 
+const openSolarPlanner = (source: string) => {
+  trackEvent("Planner Started", { source })
+  if (typeof window !== "undefined") {
+    if (window.voiceflow?.chat) {
+      window.voiceflow.chat.open()
+    } else {
+      trackEvent("Planner Fallback", { reason: "Voiceflow unavailable" })
+      window.dispatchEvent(new Event("voiceflow-fallback"))
+    }
+  }
+}
+
 // 1. Navigation
-function Navigation({ onOpenModal }: { onOpenModal: () => void }) {
+function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -85,10 +107,10 @@ function Navigation({ onOpenModal }: { onOpenModal: () => void }) {
 
         <div className="flex items-center gap-3">
           <Button
-            onClick={onOpenModal}
+            onClick={() => openSolarPlanner("Navigation")}
             className="hidden sm:inline-flex bg-orange-500 hover:bg-orange-600 text-white font-medium shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 transition-all"
           >
-            Get a Free Assessment
+            Start Solar Planner
           </Button>
 
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -112,11 +134,11 @@ function Navigation({ onOpenModal }: { onOpenModal: () => void }) {
                 <Button
                   onClick={() => {
                     setIsOpen(false)
-                    onOpenModal()
+                    openSolarPlanner("Mobile Navigation")
                   }}
                   className="w-full bg-orange-500 hover:bg-orange-600 text-white mt-4"
                 >
-                  Get a Free Assessment
+                  Start Solar Planner
                 </Button>
               </div>
             </SheetContent>
@@ -128,17 +150,11 @@ function Navigation({ onOpenModal }: { onOpenModal: () => void }) {
 }
 
 // 2. Hero Section
-function HeroSection({ onOpenModal }: { onOpenModal: () => void }) {
-  const openChat = () => {
-    if (typeof window !== "undefined" && window.voiceflow?.chat) {
-      window.voiceflow.chat.open()
-    } else {
-      onOpenModal()
-    }
-  }
+function HeroSection() {
+  const openChat = () => openSolarPlanner("Hero Section")
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
+    <section className="relative min-h-screen flex flex-col items-center justify-center pt-16 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-orange-500/20 via-transparent to-transparent" />
       
@@ -151,34 +167,50 @@ function HeroSection({ onOpenModal }: { onOpenModal: () => void }) {
           We design solar systems that reduce generator dependence and provide reliable power for Nigerian homes and businesses.
         </p>
         
-        <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="mt-12 text-slate-300 font-medium mb-6">
+          What would you like to do?
+        </div>
+        
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-3xl mx-auto">
           <Button
             size="lg"
-            onClick={onOpenModal}
-            className="bg-orange-500 hover:bg-orange-600 text-white text-lg px-8 py-6 shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 transition-all"
+            onClick={openChat}
+            className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white text-lg px-8 py-6 shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 transition-all"
           >
-            Get a Free Solar Assessment
+            Start Solar Planner
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
+          
           <Button
             size="lg"
             variant="outline"
-            onClick={openChat}
-            className="border-slate-500 bg-slate-800/50 text-white hover:bg-slate-700 hover:text-white text-lg px-8 py-6 shadow-none"
+            asChild
+            className="w-full sm:w-auto border-slate-500 bg-slate-800/50 text-white hover:bg-slate-700 hover:text-white text-lg px-8 py-6 shadow-none"
           >
-            <MessageCircle className="mr-2 h-5 w-5" />
-            Talk to AI Advisor
+            <a 
+              href="https://wa.me/2349135889758?text=Hi%20Zenith%20Solar,%20I%20would%20like%20to%20discuss%20a%20solar%20system." 
+              target="_blank" 
+              rel="noopener noreferrer"
+              onClick={() => trackEvent("WhatsApp Clicked", { source: "Hero Section" })}
+            >
+              <MessageCircle className="mr-2 h-5 w-5" />
+              WhatsApp
+            </a>
           </Button>
-        </div>
-        
-        <div className="mt-12 flex items-center justify-center gap-6 text-sm text-slate-400">
-          <a href="tel:+234000000000" className="hover:text-white transition-colors flex items-center gap-2">
-            Call Us
-          </a>
-          <span>•</span>
-          <a href="#" className="hover:text-white transition-colors flex items-center gap-2">
-            WhatsApp
-          </a>
+          
+          <Button
+            size="lg"
+            variant="outline"
+            asChild
+            className="w-full sm:w-auto border-slate-500 bg-slate-800/50 text-white hover:bg-slate-700 hover:text-white text-lg px-8 py-6 shadow-none"
+          >
+            <a 
+              href="tel:+2349135889758"
+              onClick={() => trackEvent("Call Clicked", { source: "Hero Section" })}
+            >
+              Call Now
+            </a>
+          </Button>
         </div>
       </div>
     </section>
@@ -308,27 +340,34 @@ function ServicesSection() {
 // 6. Who We Help (Markets)
 function WhoWeHelpSection() {
   const markets = [
-    { icon: Home, label: "Homes" },
-    { icon: Building2, label: "Businesses" },
-    { icon: GraduationCap, label: "Schools" },
-    { icon: Hotel, label: "Hotels" },
-    { icon: Church, label: "Churches" },
-    { icon: Factory, label: "Factories" },
+    { icon: Home, label: "Homes", msg: "I need a solar system for my home." },
+    { icon: Building2, label: "Businesses", msg: "I need a commercial solar assessment." },
+    { icon: GraduationCap, label: "Schools", msg: "I'd like to discuss a school installation." },
+    { icon: Hotel, label: "Hotels", msg: "I'd like an engineering consultation for a hotel system." },
+    { icon: Church, label: "Churches", msg: "I'd like to discuss a solar installation for our church." },
+    { icon: Factory, label: "Factories", msg: "I'd like an engineering consultation for an industrial system." },
   ]
 
   return (
     <section className="py-16 bg-slate-900 border-t border-slate-800">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
-          <span className="text-slate-400 font-medium">WHO WE HELP:</span>
+          <span className="text-slate-400 font-medium">WHO WE HELP (Tap to WhatsApp):</span>
           <div className="flex flex-wrap justify-center gap-8">
             {markets.map((m, i) => (
-              <div key={i} className="flex flex-col items-center gap-2">
-                <div className="h-12 w-12 rounded-full bg-slate-800 flex items-center justify-center">
-                  <m.icon className="h-5 w-5 text-slate-300" />
+              <a 
+                key={i} 
+                href={`https://wa.me/2349135889758?text=${encodeURIComponent(`Hi Zenith Solar. ${m.msg}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackEvent("WhatsApp Clicked", { source: "Who We Help", type: m.label })}
+                className="flex flex-col items-center gap-2 group cursor-pointer"
+              >
+                <div className="h-12 w-12 rounded-full bg-slate-800 flex items-center justify-center group-hover:bg-green-500/20 group-hover:border group-hover:border-green-500/30 transition-all">
+                  <m.icon className="h-5 w-5 text-slate-300 group-hover:text-green-500 transition-colors" />
                 </div>
-                <span className="text-sm text-slate-400">{m.label}</span>
-              </div>
+                <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{m.label}</span>
+              </a>
             ))}
           </div>
         </div>
@@ -338,7 +377,7 @@ function WhoWeHelpSection() {
 }
 
 // 7. What Happens During Your Assessment
-function AssessmentSection({ onOpenModal }: { onOpenModal: () => void }) {
+function AssessmentSection() {
   const deliverables = [
     "Energy usage review",
     "Recommended system size",
@@ -348,6 +387,8 @@ function AssessmentSection({ onOpenModal }: { onOpenModal: () => void }) {
     "Estimated installation timeline",
     "Opportunity to ask questions",
   ]
+
+  const openChat = () => openSolarPlanner("Assessment Section")
 
   return (
     <section className="py-24 bg-slate-950">
@@ -359,8 +400,8 @@ function AssessmentSection({ onOpenModal }: { onOpenModal: () => void }) {
               <p className="text-slate-400 mb-8">
                 We provide clarity before you commit. Here is exactly what we will help you understand about your property.
               </p>
-              <Button onClick={onOpenModal} className="bg-orange-500 hover:bg-orange-600 text-white">
-                Request Assessment
+              <Button onClick={openChat} className="bg-orange-500 hover:bg-orange-600 text-white">
+                Start Solar Planner
               </Button>
             </div>
             <div className="bg-slate-900/50 p-6 rounded-2xl border border-slate-700/50">
@@ -568,19 +609,15 @@ function FAQSection() {
   )
 }
 
-// 11. AI Solar Advisor Section (Kept as is, minor text tweaks to match promise)
-function AISolarAdvisorSection() {
+// 11. Solar Planner Section
+function SolarPlannerSection() {
   const features = [
-    { icon: <MessageCircle className="h-5 w-5 text-orange-400" />, text: "Answers your specific questions instantly, 24/7" },
-    { icon: <Sparkles className="h-5 w-5 text-orange-400" />, text: "Collects details about your property & usage" },
-    { icon: <Zap className="h-5 w-5 text-orange-400" />, text: "Recommends the right next steps for you" },
+    { icon: <Home className="h-5 w-5 text-orange-400" />, text: "Collects details about your property & load" },
+    { icon: <Zap className="h-5 w-5 text-orange-400" />, text: "Recommends inverter size & battery capacity" },
+    { icon: <ShieldCheck className="h-5 w-5 text-orange-400" />, text: "Provides a realistic investment range" },
   ]
 
-  const handleOpenChat = () => {
-    if (typeof window !== "undefined" && window.voiceflow?.chat) {
-      window.voiceflow.chat.open()
-    }
-  }
+  const handleOpenChat = () => openSolarPlanner("Solar Planner Section")
 
   return (
     <section id="ai-advisor" className="relative py-24 overflow-hidden">
@@ -593,17 +630,17 @@ function AISolarAdvisorSection() {
           <div className="flex justify-center mb-6">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium">
               <Bot className="h-4 w-4" />
-              Powered by AI
+              Personalized Solar Recommendation
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-                Get Personalized Guidance in <span className="text-orange-500">Minutes</span>
+                Find the Right <span className="text-orange-500">Solar System</span> for Your Property
               </h2>
               <p className="text-slate-400 text-lg mb-8 leading-relaxed">
-                Describe your situation to our AI Solar Advisor. It will help us understand your needs before we recommend a tailored solution.
+                Takes about 2 minutes. We'll help you understand exactly what solar system you need before you ever speak to an engineer.
               </p>
 
               <ul className="space-y-4 mb-10">
@@ -619,7 +656,7 @@ function AISolarAdvisorSection() {
 
               <button onClick={handleOpenChat} className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold text-lg shadow-[0_0_30px_rgba(249,115,22,0.4)] hover:shadow-[0_0_50px_rgba(249,115,22,0.6)] transition-all duration-300">
                 <Bot className="h-5 w-5" />
-                Talk to AI Advisor
+                Start Planning
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 <span className="absolute -inset-1 rounded-xl bg-orange-500/30 animate-ping opacity-30" />
               </button>
@@ -630,47 +667,59 @@ function AISolarAdvisorSection() {
                 onClick={handleOpenChat}
                 className="relative rounded-2xl border border-orange-500/20 bg-slate-900/80 backdrop-blur-md p-6 shadow-[0_0_60px_rgba(249,115,22,0.15)] cursor-pointer hover:border-orange-500/50 hover:shadow-[0_0_60px_rgba(249,115,22,0.25)] transition-all"
               >
-                <div className="flex items-center gap-3 pb-4 border-b border-slate-700/60 mb-4">
-                  <div className="relative">
+                <div className="flex items-center justify-between pb-4 border-b border-slate-700/60 mb-4">
+                  <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-lg">
-                      <Sun className="h-5 w-5 text-white" />
+                      <Zap className="h-5 w-5 text-white" />
                     </div>
-                    <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-400 border-2 border-slate-900" />
-                  </div>
-                  <div>
-                    <p className="text-white font-semibold text-sm">Zenith AI Solar Advisor</p>
-                    <p className="text-green-400 text-xs">🟢 Online · Replies instantly</p>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex gap-2">
-                    <div className="h-7 w-7 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center flex-shrink-0 mt-1">
-                      <Sun className="h-3.5 w-3.5 text-orange-400" />
-                    </div>
-                    <div className="bg-slate-800 rounded-2xl rounded-tl-none px-4 py-3 text-sm text-slate-300 max-w-xs">
-                      Hi! 👋 I'm Zenith's AI Advisor. I'll ask a few questions about your property and usage before recommending a suitable solution.
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2 justify-end">
-                    <div className="bg-orange-500/90 rounded-2xl rounded-tr-none px-4 py-3 text-sm text-white max-w-xs">
-                      I have a 3-bedroom home and my generator runs all day.
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2">
-                    <div className="h-7 w-7 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center flex-shrink-0 mt-1">
-                      <Sun className="h-3.5 w-3.5 text-orange-400" />
-                    </div>
-                    <div className="bg-slate-800 rounded-2xl rounded-tl-none px-4 py-3 text-sm text-slate-300 max-w-xs">
-                      I can help with that. What heavy appliances (like ACs or pumps) do you typically run?
+                    <div>
+                      <p className="text-white font-semibold text-sm">Solar Planning Report</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-4 flex items-center gap-2 bg-slate-800 rounded-xl px-4 py-3 border border-slate-700/60">
-                  <span className="text-slate-500 text-sm flex-1">Type your message...</span>
+                <div className="space-y-4 mb-6">
+                  <div className="grid grid-cols-1 gap-3">
+                    <div className="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50 flex justify-between items-center">
+                      <p className="text-xs text-slate-500 font-medium">Recommended System</p>
+                      <p className="text-sm text-slate-200 font-semibold">5kVA Hybrid Inverter</p>
+                    </div>
+                    <div className="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50 flex justify-between items-center">
+                      <p className="text-xs text-slate-500 font-medium">Recommended Battery</p>
+                      <p className="text-sm text-slate-200 font-semibold">10kWh Lithium</p>
+                    </div>
+                    <div className="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50 flex justify-between items-center">
+                      <p className="text-xs text-slate-500 font-medium">Estimated Backup</p>
+                      <p className="text-sm text-slate-200 font-semibold">Up to 18 Hours (Approximate)</p>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-orange-500/10 rounded-lg p-4 border border-orange-500/20">
+                    <div className="flex justify-between items-center mb-2">
+                      <p className="text-sm text-orange-200 font-medium">Estimated Investment Range</p>
+                      <p className="text-lg font-bold text-white">₦4.8M – ₦5.3M</p>
+                    </div>
+                    <p className="text-[10px] text-orange-200/60 leading-tight">
+                      This recommendation is based on the information you provided. A site visit may change the final design.
+                    </p>
+                  </div>
+
+                  <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700/50">
+                    <p className="text-xs text-slate-400 font-bold uppercase mb-2">What happens next?</p>
+                    <ol className="text-xs text-slate-300 space-y-1.5 list-decimal list-inside mb-3">
+                      <li>Review your recommendation.</li>
+                      <li>An engineer confirms your requirements.</li>
+                      <li>We perform a site assessment if needed.</li>
+                      <li>You receive a final system design and quotation.</li>
+                    </ol>
+                    <p className="text-[10px] text-orange-200/80 leading-tight pt-3 border-t border-slate-700/50">
+                      Every recommendation is reviewed by a Zenith Solar engineer before a final system design is prepared.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 bg-slate-800 rounded-xl px-4 py-3 border border-slate-700/60 justify-between">
+                  <span className="text-slate-400 text-sm font-medium">Start your planning session</span>
                   <div className="h-8 w-8 rounded-lg bg-orange-500 flex items-center justify-center cursor-pointer hover:bg-orange-600 transition-colors">
                     <ArrowRight className="h-4 w-4 text-white" />
                   </div>
@@ -698,7 +747,7 @@ function FooterSection() {
               We design solar systems that reduce generator dependence and provide reliable power for Nigerian homes and businesses.
             </p>
             <div className="flex flex-col gap-2">
-              <a href="tel:+234000000000" className="text-slate-300 hover:text-white font-medium">+234 (0) 000 000 0000</a>
+              <a href="tel:+2349135889758" className="text-slate-300 hover:text-white font-medium">+234 913 588 9758</a>
               <a href="mailto:hello@zenithsolar.com.ng" className="text-slate-300 hover:text-white font-medium">hello@zenithsolar.com.ng</a>
             </div>
           </div>
@@ -730,7 +779,14 @@ function FooterSection() {
 }
 
 export default function LandingPage() {
-  const [modalOpen, setModalOpen] = useState(false)
+  const [showFallback, setShowFallback] = useState(false)
+
+  useEffect(() => {
+    const handleFallback = () => setShowFallback(true)
+    window.addEventListener("voiceflow-fallback", handleFallback)
+    return () => window.removeEventListener("voiceflow-fallback", handleFallback)
+  }, [])
+
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.woflbillion.com.ng"
 
   const jsonLd = {
@@ -748,22 +804,45 @@ export default function LandingPage() {
   return (
     <main className="min-h-screen bg-slate-900 text-foreground">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Navigation onOpenModal={() => setModalOpen(true)} />
-      <LeadCaptureModal open={modalOpen} onOpenChange={setModalOpen} />
+      <Navigation />
       
-      <HeroSection onOpenModal={() => setModalOpen(true)} />
+      <HeroSection />
       <CommonProblemsSection />
       <WhyZenithSection />
       <ServicesSection />
       <WhoWeHelpSection />
-      <AssessmentSection onOpenModal={() => setModalOpen(true)} />
+      <AssessmentSection />
       <ProcessSection />
       <ProjectsSection />
       <FAQSection />
-      <AISolarAdvisorSection />
+      <SolarPlannerSection />
       <FooterSection />
       
       <VoiceflowWidget />
+
+      <AlertDialog open={showFallback} onOpenChange={setShowFallback}>
+        <AlertDialogContent className="bg-slate-900 border-slate-700">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-white">Planner temporarily unavailable</AlertDialogTitle>
+            <AlertDialogDescription className="text-slate-400 text-base mt-2">
+              We're having trouble loading the Solar Planner right now. You can still speak directly with one of our engineers on WhatsApp.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-4">
+            <AlertDialogCancel className="border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white">Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-green-600 text-white hover:bg-green-700"
+              onClick={() => {
+                const fallbackMsg = "Hi Zenith Solar, I'm having trouble loading the planner, but I would like to discuss a solar system for my property."
+                window.open(`https://wa.me/2349135889758?text=${encodeURIComponent(fallbackMsg)}`, "_blank")
+                setShowFallback(false)
+              }}
+            >
+              Open WhatsApp
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </main>
   )
 }
