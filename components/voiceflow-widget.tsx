@@ -28,9 +28,13 @@ export function VoiceflowWidget() {
           const WhatsAppHandoffExtension = {
             name: "whatsapp_handoff",
             type: "response",
-            match: ({ trace }: any) =>
-              trace.type === "ext_whatsapp_handoff" || trace.payload?.name === "whatsapp_handoff",
+            match: ({ trace }: any) => {
+              console.log("VOICEFLOW TRACE", trace)
+              return true
+            },
             render: ({ trace, element }: any) => {
+              console.log("VOICEFLOW TRACE");
+              console.log(trace);
               // Extract data passed from the Voiceflow Custom Action block
               // If none are provided, fallback to a generic message
               const payload = trace.payload || {}
@@ -64,6 +68,22 @@ export function VoiceflowWidget() {
               element.innerHTML = ""
             },
           }
+
+          window.addEventListener("message", (event) => {
+            console.log("VOICEFLOW MESSAGE:", event.data);
+
+            if (
+              typeof event.data === "string" &&
+              event.data.startsWith('{"type":"voiceflow:')
+            ) {
+              try {
+                const data = JSON.parse(event.data);
+                console.log("VOICEFLOW PARSED:", data);
+              } catch (err) {
+                console.error(err);
+              }
+            }
+          });
 
           window.voiceflow.chat.load({
             verify: { projectID: "6a60a191305f406e497ac3c5" },
