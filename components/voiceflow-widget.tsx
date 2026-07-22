@@ -38,7 +38,7 @@ export function VoiceflowWidget() {
               // Extract data passed from the Voiceflow Custom Action block
               // If none are provided, fallback to a generic message
               const payload = trace.payload || {}
-              
+
               // We're parsing the variables passed from Voiceflow (expecting JSON string or object depending on VF version)
               let parsedData: any = {}
               try {
@@ -53,17 +53,17 @@ export function VoiceflowWidget() {
               const batteryStr = parsedData?.battery || parsedData?.payload?.battery || "Recommended Battery"
 
               trackEvent("Planner Completed", { source: "Voiceflow Extension", system: systemStr, battery: batteryStr })
-              
+
               const message = `Hi Zenith Solar,\n\nI completed the Solar Planner.\n\nRecommended system:\n• ${systemStr}\n• ${batteryStr}\n\nI'm interested in discussing the next steps.`
-              
+
               const waLink = "https://wa.me/2349135889758?text=" + encodeURIComponent(message)
-              
+
               // Open WhatsApp in a new tab
               window.open(waLink, "_blank")
-              
+
               // Optionally close the chat widget
               window.voiceflow.chat.close()
-              
+
               // This extension renders silently, without a UI component in the chat
               element.innerHTML = ""
             },
@@ -86,7 +86,7 @@ export function VoiceflowWidget() {
           });
 
           window.voiceflow.chat.load({
-            verify: { projectID: "6a612fdb58ae3997e064c50f" },
+            verify: { projectID: "6a6157573f60f442c6367c81" },
             url: "https://general-runtime.voiceflow.com",
             render: {
               mode: "overlay",
