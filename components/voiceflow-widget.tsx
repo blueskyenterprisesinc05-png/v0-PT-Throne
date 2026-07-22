@@ -30,7 +30,7 @@ export function VoiceflowWidget() {
             type: "response",
             match: ({ trace }: any) => {
               console.log("VOICEFLOW TRACE", trace)
-              return true
+              return trace.type === "ext_whatsapp_handoff" || trace.payload?.name === "whatsapp_handoff"
             },
             render: ({ trace, element }: any) => {
               console.log("VOICEFLOW TRACE");
