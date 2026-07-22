@@ -86,7 +86,7 @@ export function VoiceflowWidget() {
           });
 
           window.voiceflow.chat.load({
-            verify: { projectID: "6a60a191305f406e497ac3c5" },
+            verify: { projectID: "6a612fdb58ae3997e064c50f" },
             url: "https://general-runtime.voiceflow.com",
             render: {
               mode: "overlay",
