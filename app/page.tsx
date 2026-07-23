@@ -120,26 +120,37 @@ function Navigation() {
                 {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="bg-slate-900 border-slate-800 w-full sm:w-[400px] pt-24 [&>button]:hidden flex flex-col">
-              <div className="flex flex-col gap-8 mt-4">
+            {isOpen && (
+              <style>{`
+                #voiceflow-chat,
+                .vfrc-widget {
+                  display: none !important;
+                  opacity: 0 !important;
+                  visibility: hidden !important;
+                  pointer-events: none !important;
+                }
+              `}</style>
+            )}
+            <SheetContent side="right" className="bg-slate-900 border-slate-800 w-full sm:w-[400px] pt-24 px-8 pb-12 [&>button]:hidden flex flex-col h-[100dvh]">
+              <div className="flex flex-col justify-center flex-1 gap-12 mt-4">
                 {navLinks.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="text-2xl font-medium text-slate-300 hover:text-white transition-colors"
+                    className="text-3xl font-semibold text-slate-300 hover:text-white transition-colors text-center"
                   >
                     {link.label}
                   </a>
                 ))}
               </div>
-              <div className="mt-auto mb-8">
+              <div className="mt-auto pt-8">
                 <Button
                   onClick={() => {
                     setIsOpen(false)
                     openSolarPlanner("Mobile Navigation")
                   }}
-                  className="w-full bg-orange-500 hover:bg-orange-600 text-white py-6 text-lg font-semibold shadow-lg shadow-orange-500/25"
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white py-7 text-xl font-semibold shadow-lg shadow-orange-500/25 rounded-xl"
                 >
                   Start Solar Planner
                 </Button>
