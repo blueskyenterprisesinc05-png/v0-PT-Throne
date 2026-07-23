@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/accordion"
 import {
   Menu,
+  X,
   Check,
   Zap,
   ArrowRight,
@@ -74,15 +75,15 @@ function Navigation() {
   }, [])
 
   const navLinks = [
-    { href: "#projects", label: "Projects" },
     { href: "#how-we-work", label: "How We Work" },
     { href: "#services", label: "Services" },
+    { href: "#projects", label: "Projects" },
     { href: "#faq", label: "FAQ" },
   ]
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-300 ${
         scrolled
           ? "backdrop-blur-md bg-slate-900/80 border-b border-white/10 shadow-lg"
           : "bg-transparent border-b border-transparent"
@@ -115,28 +116,30 @@ function Navigation() {
 
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="text-white">
-                <Menu className="h-5 w-5" />
+              <Button variant="ghost" size="icon" className="text-white relative z-[60]">
+                {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="bg-slate-900 border-slate-800">
-              <div className="flex flex-col gap-6 mt-8">
+            <SheetContent side="right" className="bg-slate-900 border-slate-800 w-full sm:w-[400px] pt-24 [&>button]:hidden flex flex-col">
+              <div className="flex flex-col gap-8 mt-4">
                 {navLinks.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="text-lg font-medium text-slate-300 hover:text-white transition-colors"
+                    className="text-2xl font-medium text-slate-300 hover:text-white transition-colors"
                   >
                     {link.label}
                   </a>
                 ))}
+              </div>
+              <div className="mt-auto mb-8">
                 <Button
                   onClick={() => {
                     setIsOpen(false)
                     openSolarPlanner("Mobile Navigation")
                   }}
-                  className="w-full bg-orange-500 hover:bg-orange-600 text-white mt-4"
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white py-6 text-lg font-semibold shadow-lg shadow-orange-500/25"
                 >
                   Start Solar Planner
                 </Button>
