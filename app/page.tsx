@@ -83,14 +83,18 @@ function Navigation() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[60] pointer-events-auto transition-all duration-300 ${
         scrolled
           ? "backdrop-blur-md bg-slate-900/80 border-b border-white/10 shadow-lg"
           : "bg-transparent border-b border-transparent"
       }`}
     >
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <a href="#" className="text-xl font-semibold text-white tracking-tight">
+        <a 
+          href="#" 
+          className="text-xl font-semibold text-white tracking-tight"
+          onClick={() => setIsOpen(false)}
+        >
           Zenith<span className="text-orange-500">Solar</span>
         </a>
 
@@ -116,7 +120,7 @@ function Navigation() {
 
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="text-white relative z-[60]">
+              <Button variant="ghost" size="icon" className="text-white">
                 {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </Button>
             </SheetTrigger>
@@ -132,13 +136,27 @@ function Navigation() {
               `}</style>
             )}
             <SheetContent side="right" className="bg-slate-900 border-slate-800 w-full sm:w-[400px] pt-24 px-8 pb-12 [&>button]:hidden flex flex-col h-[100dvh]">
-              <div className="flex flex-col justify-center flex-1 gap-12 mt-4">
+              {/* Clickable background area to dismiss */}
+              <div 
+                className="flex flex-col justify-center flex-1 gap-12 mt-4 cursor-pointer"
+                onClick={() => setIsOpen(false)}
+              >
                 {navLinks.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className="text-3xl font-semibold text-slate-300 hover:text-white transition-colors text-center"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setIsOpen(false);
+                      const target = document.querySelector(link.href);
+                      if (target) {
+                        setTimeout(() => {
+                          target.scrollIntoView({ behavior: "smooth" });
+                        }, 50);
+                      }
+                    }}
+                    className="text-3xl font-semibold text-slate-300 hover:text-white active:scale-95 transition-all text-center"
                   >
                     {link.label}
                   </a>
